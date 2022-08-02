@@ -15,8 +15,8 @@
     "react-native": "0.68.2"
   },
   "devDependencies": {
-    "@babel/core": "7.18.5",
-    "@babel/runtime": "7.18.3",
+    "@babel/core": "7.18.10",
+    "@babel/runtime": "7.18.9",
     "@types/babel__core": "7.1.19",
     "@types/react": "17.0.21",
     "@types/react-native": "0.68.0",
