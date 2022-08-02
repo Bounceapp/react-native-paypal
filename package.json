@@ -1,0 +1,114 @@
+{
+  "name": "@bounce/react-native-paypal",
+  "version": "0.1.0",
+  "description": "React Native wrapper to bridge PayPal iOS and Android SDK",
+  "main": "lib/commonjs/index",
+  "module": "lib/module/index",
+  "types": "lib/typescript/index.d.ts",
+  "react-native": "src/index",
+  "source": "src/index",
+  "files": [
+    "src",
+    "lib",
+    "android",
+    "ios",
+    "cpp",
+    "react-native-paypal.podspec",
+    "!lib/typescript/example",
+    "!android/build",
+    "!ios/build",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__"
+  ],
+  "scripts": {
+    "test": "jest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint-staged": "lint-staged --allow-empty",
+    "prepare": "bob build && husky install",
+    "release": "release-it",
+    "doc": "typedoc",
+    "example": "yarn --cwd example",
+    "bootstrap": "yarn example && yarn && yarn example pods"
+  },
+  "keywords": [
+    "expo",
+    "paypal",
+    "braintree",
+    "react-native",
+    "ios",
+    "android"
+  ],
+  "repository": "https://github.com/Bounceapp/react-native-paypal",
+  "author": "Bounce (https://usebounce.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Bounceapp/react-native-paypal/issues"
+  },
+  "homepage": "https://github.com/Bounceapp/react-native-paypal#readme",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{md,json}": "prettier --write"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.18.2",
+    "@commitlint/config-conventional": "^17.0.2",
+    "@react-native-community/eslint-config": "^3.0.2",
+    "@release-it/conventional-changelog": "^5.0.0",
+    "@types/eslint": "^8.4.5",
+    "@types/eslint-plugin-prettier": "^3.1.0",
+    "@types/jest": "^28.1.2",
+    "@types/prettier": "^2.6.4",
+    "@types/react": "~17.0.21",
+    "@types/react-native": "0.68.0",
+    "@typescript-eslint/eslint-plugin": "5.31.0",
+    "@typescript-eslint/parser": "5.31.0",
+    "commitlint": "^17.0.2",
+    "eslint": "^8.4.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "7.30.1",
+    "eslint-plugin-react-native": "4.0.0",
+    "eslint-plugin-unused-imports": "2.0.0",
+    "husky": "8.0.1",
+    "jest": "^28.1.1",
+    "lint-staged": "13.0.3",
+    "pod-install": "^0.1.0",
+    "prettier": "^2.0.5",
+    "react": "17.0.2",
+    "react-native": "0.68.2",
+    "react-native-builder-bob": "^0.18.3",
+    "release-it": "^15.0.0",
+    "typedoc": "^0.23.10",
+    "typescript": "^4.5.2"
+  },
+  "resolutions": {
+    "@types/react": "17.0.21",
+    "@types/react-native": "0.68.0"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      "commonjs",
+      "module",
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
+    ]
+  }
+}
