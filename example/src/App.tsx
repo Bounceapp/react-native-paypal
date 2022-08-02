@@ -22,7 +22,7 @@ export default function App() {
     setLoading(true)
     try {
       const res = await requestBillingAgreement({
-        clientToken: "sandbox_csp74fwf_wyd36y8xkbhj2c28",
+        clientToken: "CLIENT_TOKEN",
       })
       setPayload(res)
     } catch (error) {

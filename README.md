@@ -45,7 +45,7 @@ export default function App() {
   const onPress = async () => {
     try {
       const res = await requestBillingAgreement({
-        clientToken: "sandbox_csp74fwf_wyd36y8xkbhj2c28",
+        clientToken: "CLIENT_TOKEN",
       })
 
       if (res?.error) throw new Error(res.error?.message ?? res.error.code)
