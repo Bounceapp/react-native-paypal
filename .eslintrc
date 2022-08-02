@@ -11,11 +11,13 @@
     "prettier/prettier": [
       "error",
       {
-        "quoteProps": "consistent",
-        "singleQuote": true,
         "tabWidth": 2,
-        "trailingComma": "es5",
-        "useTabs": false
+        "useTabs": false,
+        "arrowParens": "avoid",
+        "bracketSameLine": true,
+        "semi": false,
+        "singleQuote": false,
+        "trailingComma": "all"
       }
     ]
   }

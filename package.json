@@ -24,7 +24,7 @@
   "scripts": {
     "test": "jest",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint .",
+    "lint": "eslint . --fix",
     "lint-staged": "lint-staged --allow-empty",
     "prepare": "bob build && husky install",
     "release": "release-it",

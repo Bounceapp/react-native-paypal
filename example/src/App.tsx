@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
   ActivityIndicator,
   Button,
@@ -7,30 +7,30 @@ import {
   StyleSheet,
   Text,
   View,
-} from "react-native";
+} from "react-native"
 import {
   requestBillingAgreement,
   RequestBillingAgreementResponse,
-} from "@bounce/react-native-paypal";
+} from "@bounce/react-native-paypal"
 
 export default function App() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
   const [payload, setPayload] =
-    useState<RequestBillingAgreementResponse | null>();
+    useState<RequestBillingAgreementResponse | null>()
 
   const onPress = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
       const res = await requestBillingAgreement({
         clientToken: "sandbox_csp74fwf_wyd36y8xkbhj2c28",
-      });
-      setPayload(res);
+      })
+      setPayload(res)
     } catch (error) {
-      setPayload(null);
+      setPayload(null)
     }
 
-    setLoading(false);
-  };
+    setLoading(false)
+  }
 
   return (
     <SafeAreaView style={styles.screen}>
@@ -47,7 +47,7 @@ export default function App() {
         )}
       </View>
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -64,4 +64,4 @@ const styles = StyleSheet.create({
   result: {
     marginTop: 24,
   },
-});
+})

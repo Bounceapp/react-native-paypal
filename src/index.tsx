@@ -1,14 +1,14 @@
-import { NativeModules, Platform } from "react-native";
+import { NativeModules, Platform } from "react-native"
 
 const LINKING_ERROR =
   `The package 'react-native-paypal' doesn't seem to be linked. Make sure: \n\n` +
   Platform.select({ ios: "- You have run 'pod install'\n", default: "" }) +
   "- You rebuilt the app after installing the package\n" +
-  "- You are not using Expo managed workflow\n";
+  "- You are not using Expo managed workflow\n"
 
 export type RequestBillingAgreementOptions = {
-  clientToken: string;
-  billingAgreementDescription?: string;
+  clientToken: string
+  billingAgreementDescription?: string
   localeCode?:
     | "da_DK"
     | "de_DE"
@@ -36,36 +36,36 @@ export type RequestBillingAgreementOptions = {
     | "zh_CN"
     | "zh_HK"
     | "zh_TW"
-    | "zh_XC";
-  merchantAccountID?: string;
-  displayName?: string;
-};
+    | "zh_XC"
+  merchantAccountID?: string
+  displayName?: string
+}
 
 export type RequestBillingAgreementError = {
-  code: string;
-  message?: string;
-};
+  code: string
+  message?: string
+}
 
 export type RequestBillingAgreementPayload = {
-  nonce: string;
+  nonce: string
   details: {
-    payerId: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    phone?: string;
-  };
-};
+    payerId: string
+    email: string
+    firstName: string
+    lastName: string
+    phone?: string
+  }
+}
 
 export type RequestBillingAgreementResponse =
   | {
-      payload: undefined;
-      error: RequestBillingAgreementError;
+      payload: undefined
+      error: RequestBillingAgreementError
     }
   | {
-      payload: RequestBillingAgreementPayload;
-      error: undefined;
-    };
+      payload: RequestBillingAgreementPayload
+      error: undefined
+    }
 
 const Paypal = NativeModules.Paypal
   ? NativeModules.Paypal
@@ -73,19 +73,19 @@ const Paypal = NativeModules.Paypal
       {},
       {
         get() {
-          throw new Error(LINKING_ERROR);
+          throw new Error(LINKING_ERROR)
         },
-      }
-    );
+      },
+    )
 
 const DEFAULT_OPTIONS = {
   billingAgreementDescription: "",
   shippingAddressRequired: false,
-};
+}
 
 export function requestBillingAgreement(
-  options: RequestBillingAgreementOptions
+  options: RequestBillingAgreementOptions,
 ): Promise<RequestBillingAgreementResponse> {
-  const composedOptions = { ...DEFAULT_OPTIONS, ...options };
-  return Paypal.requestBillingAgreement(composedOptions);
+  const composedOptions = { ...DEFAULT_OPTIONS, ...options }
+  return Paypal.requestBillingAgreement(composedOptions)
 }
