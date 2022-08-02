@@ -48,7 +48,8 @@
   },
   "homepage": "https://github.com/Bounceapp/react-native-paypal#readme",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "lint-staged": {
     "*.{ts,tsx,jsx}": [
