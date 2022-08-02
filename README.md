@@ -21,7 +21,7 @@ or
 npm install @bounceapp/react-native-paypal react-native-svg
 ```
 
-### Android
+### Bare Workflow
 
 ```xml
 // android/app/src/main/AndroidManifest.xml
@@ -37,6 +37,29 @@ npm install @bounceapp/react-native-paypal react-native-svg
     <data android:scheme="${applicationId}.braintree" />
   </intent-filter>
 </activity>
+```
+
+### Expo
+
+```json
+// app.json
+{
+  "expo": {
+    "android": {
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "${applicationId}.braintree"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
+    }
+  }
+}
 ```
 
 ## Usage example
