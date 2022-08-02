@@ -1,11 +1,11 @@
 # @bounce/react-native-paypal
 
-[![Version](https://img.shields.io/npm/v/@bounce/react-native-paypal.svg)](https://www.npmjs.com/package/@bounce/react-native-paypal) [![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg)](https://github.com/Bounceapp/react-native-paypal#readme) [![License](https://img.shields.io/github/license/stripe/stripe-react-native)](https://github.com/Bounceapp/react-native-paypal/blob/master/LICENSE)
+[![Version](https://img.shields.io/npm/v/@bounce/react-native-paypal.svg)](https://www.npmjs.com/package/@bounce/react-native-paypal) [![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg)](https://bounceapp.github.io/react-native-paypal/) [![License](https://img.shields.io/github/license/stripe/stripe-react-native)](https://github.com/Bounceapp/react-native-paypal/blob/master/LICENSE)
 
 React Native wrapper to bridge PayPal iOS and Android SDK,
 support only `requestBillingAgreement` for the moment
 
-[📘 browse the SDK reference](https://usebounce.com).
+[📘 browse the SDK reference](https://bounceapp.github.io/react-native-paypal/).
 
 ## Installation
 
@@ -37,26 +37,26 @@ npm install @bounce/react-native-paypal
 
 ```js
 // App.tsx
-import React from "react";
-import { Button } from "react-native";
-import { requestBillingAgreement } from "@bounce/react-native-paypal";
+import React from "react"
+import { Button } from "react-native"
+import { requestBillingAgreement } from "@bounce/react-native-paypal"
 
 export default function App() {
   const onPress = async () => {
     try {
       const res = await requestBillingAgreement({
         clientToken: "sandbox_csp74fwf_wyd36y8xkbhj2c28",
-      });
+      })
 
-      if (res?.error) throw new Error(res.error?.message ?? res.error.code);
+      if (res?.error) throw new Error(res.error?.message ?? res.error.code)
 
-      console.log(res.payload);
+      console.log(res.payload)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
-  return <Button onPress={onPress} title="Request Billing Agreement" />;
+  return <Button onPress={onPress} title="Request Billing Agreement" />
 }
 ```
 
