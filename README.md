@@ -43,17 +43,16 @@ import { requestBillingAgreement } from "@bounceapp/react-native-paypal"
 
 export default function App() {
   const onPress = async () => {
-    try {
-      const res = await requestBillingAgreement({
-        clientToken: "CLIENT_TOKEN",
-      })
+    const res = await requestBillingAgreement({
+      clientToken: "CLIENT_TOKEN",
+    })
 
-      if (res?.error) throw new Error(res.error?.message ?? res.error.code)
-
-      console.log(res.payload)
-    } catch (error) {
-      console.error(error)
+    if (res?.error) {
+      console.error(res?.error)
+      return 
     }
+
+    console.log(res.payload)
   }
 
   return <Button onPress={onPress} title="Request Billing Agreement" />
