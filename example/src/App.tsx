@@ -1,14 +1,7 @@
 import React, { useState } from "react"
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native"
 import {
-  ActivityIndicator,
-  Button,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native"
-import {
+  PaypalButton,
   requestBillingAgreement,
   RequestBillingAgreementResponse,
 } from "@bounceapp/react-native-paypal"
@@ -20,6 +13,7 @@ export default function App() {
 
   const onPress = async () => {
     setLoading(true)
+
     try {
       const res = await requestBillingAgreement({
         clientToken: "CLIENT_TOKEN",
@@ -40,11 +34,7 @@ export default function App() {
         )}
       </ScrollView>
       <View style={styles.bottomBar}>
-        {loading ? (
-          <ActivityIndicator />
-        ) : (
-          <Button onPress={onPress} title="Request Billing Agreement" />
-        )}
+        <PaypalButton onPress={onPress} disabled={loading} />
       </View>
     </SafeAreaView>
   )

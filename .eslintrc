@@ -1,24 +1,12 @@
 {
   "root": true,
   "parser": "@babel/eslint-parser",
-  "extends": ["@react-native-community", "prettier"],
+  "extends": ["@react-native-community"],
   "plugins": ["unused-imports", "react-native"],
   "rules": {
     "no-console": "warn",
     "unused-imports/no-unused-imports": "warn",
     "react/jsx-key": ["error", { "checkFragmentShorthand": true }],
-    "react-native/no-unused-styles": 2,
-    "prettier/prettier": [
-      "error",
-      {
-        "tabWidth": 2,
-        "useTabs": false,
-        "arrowParens": "avoid",
-        "bracketSameLine": true,
-        "semi": false,
-        "singleQuote": false,
-        "trailingComma": "all"
-      }
-    ]
+    "react-native/no-unused-styles": 2
   }
 }

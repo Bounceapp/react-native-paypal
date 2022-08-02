@@ -7,12 +7,18 @@ support only `requestBillingAgreement` for the moment
 
 [📘 browse the SDK reference](https://bounceapp.github.io/react-native-paypal/).
 
+### Platform Compatibility
+
+| Android Device | Android Emulator | iOS Device | iOS Simulator | Expo managed | Web |
+| -------------- | ---------------- | ---------- | ------------- | ------------ | --- |
+| ✅             | ✅               | ✅         | ✅            | ❌           | ❌  |
+
 ## Installation
 
 ```sh
-yarn add @bounceapp/react-native-paypal
+yarn add @bounceapp/react-native-paypal react-native-svg
 or
-npm install @bounceapp/react-native-paypal
+npm install @bounceapp/react-native-paypal react-native-svg
 ```
 
 ### Android
@@ -37,11 +43,16 @@ npm install @bounceapp/react-native-paypal
 
 ```js
 // App.tsx
-import React from "react"
+import React, { useState } from "react"
 import { Button } from "react-native"
-import { requestBillingAgreement } from "@bounceapp/react-native-paypal"
+import {
+  requestBillingAgreement,
+  PaypalButton,
+} from "@bounceapp/react-native-paypal"
 
 export default function App() {
+  const [loading, setLoading] = useState(false)
+
   const onPress = async () => {
     const res = await requestBillingAgreement({
       clientToken: "CLIENT_TOKEN",
@@ -49,13 +60,13 @@ export default function App() {
 
     if (res?.error) {
       console.error(res?.error)
-      return 
+      return
     }
 
-    console.log(res.payload)
+    setLoading(false)
   }
 
-  return <Button onPress={onPress} title="Request Billing Agreement" />
+  return <PaypalButton onPress={onPress} disabled={loading} />
 }
 ```
 
