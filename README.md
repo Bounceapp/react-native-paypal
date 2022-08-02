@@ -41,7 +41,7 @@ npm install @bounceapp/react-native-paypal react-native-svg
 
 ### Expo
 
-```json
+```ts
 // app.json
 {
   "expo": {
