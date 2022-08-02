@@ -11,7 +11,7 @@ import {
 import {
   requestBillingAgreement,
   RequestBillingAgreementResponse,
-} from "@bounce/react-native-paypal"
+} from "@bounceapp/react-native-paypal"
 
 export default function App() {
   const [loading, setLoading] = useState(false)

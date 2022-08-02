@@ -1,6 +1,6 @@
-# @bounce/react-native-paypal
+# @bounceapp/react-native-paypal
 
-[![Version](https://img.shields.io/npm/v/@bounce/react-native-paypal.svg)](https://www.npmjs.com/package/@bounce/react-native-paypal) [![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg)](https://bounceapp.github.io/react-native-paypal/) [![License](https://img.shields.io/github/license/stripe/stripe-react-native)](https://github.com/Bounceapp/react-native-paypal/blob/master/LICENSE)
+[![Version](https://img.shields.io/npm/v/@bounceapp/react-native-paypal.svg)](https://www.npmjs.com/package/@bounceapp/react-native-paypal) [![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg)](https://bounceapp.github.io/react-native-paypal/) [![License](https://img.shields.io/github/license/stripe/stripe-react-native)](https://github.com/Bounceapp/react-native-paypal/blob/master/LICENSE)
 
 React Native wrapper to bridge PayPal iOS and Android SDK,
 support only `requestBillingAgreement` for the moment
@@ -10,9 +10,9 @@ support only `requestBillingAgreement` for the moment
 ## Installation
 
 ```sh
-yarn add @bounce/react-native-paypal
+yarn add @bounceapp/react-native-paypal
 or
-npm install @bounce/react-native-paypal
+npm install @bounceapp/react-native-paypal
 ```
 
 ### Android
@@ -39,7 +39,7 @@ npm install @bounce/react-native-paypal
 // App.tsx
 import React from "react"
 import { Button } from "react-native"
-import { requestBillingAgreement } from "@bounce/react-native-paypal"
+import { requestBillingAgreement } from "@bounceapp/react-native-paypal"
 
 export default function App() {
   const onPress = async () => {

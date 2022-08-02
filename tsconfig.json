@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@bounce/react-native-paypal": ["./src/index"]
+      "@bounceapp/react-native-paypal": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

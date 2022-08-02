@@ -1,6 +1,6 @@
 {
-  "name": "@bounce/react-native-paypal-example",
-  "description": "Example app for @bounce/react-native-paypal",
+  "name": "@bounceapp/react-native-paypal-example",
+  "description": "Example app for @bounceapp/react-native-paypal",
   "version": "0.0.1",
   "private": true,
   "scripts": {
