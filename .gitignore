@@ -6,7 +6,7 @@
 .expo/
 
 # Documentation
-public
+docs
 
 # VSCode
 jsconfig.json
