@@ -52,11 +52,9 @@
     "access": "public"
   },
   "lint-staged": {
-    "*.{ts,tsx,jsx}": [
-      "eslint --fix",
+    "*.{ts,tsx,jsx,md,json}": [
       "prettier --write"
-    ],
-    "*.{md,json}": "prettier --write"
+    ]
   },
   "devDependencies": {
     "@babel/eslint-parser": "7.18.9",
