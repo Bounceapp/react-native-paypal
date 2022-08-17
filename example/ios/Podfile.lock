@@ -311,7 +311,7 @@ PODS:
   - React-jsinspector (0.68.2)
   - React-logger (0.68.2):
     - glog
-  - react-native-paypal (0.3.0):
+  - react-native-paypal (0.3.2):
     - Braintree (~> 5.11.0)
     - React-Core
   - React-perflogger (0.68.2)
@@ -573,7 +573,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: b7b553412f2ec768fe6c8f27cd6bafdb9d8719e6
   React-jsinspector: c5989c77cb89ae6a69561095a61cce56a44ae8e8
   React-logger: a0833912d93b36b791b7a521672d8ee89107aff1
-  react-native-paypal: d82c4a493281df19cba6c8d9bfd98469c608fde1
+  react-native-paypal: 24c0240bc631159f4f20dd1d9b937613eb016b66
   React-perflogger: a18b4f0bd933b8b24ecf9f3c54f9bf65180f3fe6
   React-RCTActionSheet: 547fe42fdb4b6089598d79f8e1d855d7c23e2162
   React-RCTAnimation: bc9440a1c37b06ae9ebbb532d244f607805c6034
@@ -593,4 +593,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: b4a9ac45eaf0d3e23d35567eff89c9b2afc6146d
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.11.2
