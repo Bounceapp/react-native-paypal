@@ -1,6 +1,6 @@
 {
   "name": "@bounceapp/react-native-paypal",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "React Native wrapper to bridge PayPal iOS and Android SDK",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
