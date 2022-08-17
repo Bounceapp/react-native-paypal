@@ -31,7 +31,7 @@ class PaypalModule(reactContext: ReactApplicationContext): ReactContextBaseJavaM
     activity: Activity,
     requestCode: Int,
     resultCode: Int,
-    intent: Intent
+    intent: Intent?
   ) {
   }
 
