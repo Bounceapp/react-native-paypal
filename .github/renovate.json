@@ -16,17 +16,48 @@
   "major": {
     "dependencyDashboardApproval": true
   },
+  "bundler": {
+    "enabled": false
+  },
+  "cocoapods": {
+    "enabled": false
+  },
+  "gradle": {
+    "enabled": false
+  },
+  "gradle-wrapper": {
+    "enabled": false
+  },
+  "ruby-version": {
+    "enabled": false
+  },
   "packageRules": [
+    {
+      "groupName": "manual",
+      "matchPackageNames": [
+        "react-native-svg",
+        "react",
+        "react-dom",
+        "react-native",
+        "react-native-web",
+        "@types/react",
+        "@types/react-dom"
+      ],
+      "enabled": false
+    },
+    {
+      "depTypeList": ["devDependencies"],
+      "automerge": true
+    },
     {
       "depTypeList": ["dependencies"],
       "updateTypes": ["patch"],
       "automerge": true
     },
     {
-      "depTypeList": ["dependencies", "devDependencies"],
+      "depTypeList": ["dependencies"],
       "updateTypes": ["minor", "major"],
-      "automerge": false,
-      "stabilityDays": 7
+      "automerge": false
     }
   ]
 }
