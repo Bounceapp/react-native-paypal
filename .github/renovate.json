@@ -1,11 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base", ":dependencyDashboard"],
+  "extends": ["config:base", ":dependencyDashboard", ":semanticCommits"],
   "schedule": "every weekend",
   "timezone": "Europe/Lisbon",
   "labels": ["dependencies"],
+  "postUpdateOptions": ["yarnDedupeHighest"],
   "lockFileMaintenance": {
-    "enabled": true
+    "enabled": false
   },
   "vulnerabilityAlerts": {
     "labels": ["security"],
@@ -46,18 +47,8 @@
       "enabled": false
     },
     {
-      "depTypeList": ["devDependencies"],
+      "matchPackagePatterns": ["*"],
       "automerge": true
-    },
-    {
-      "depTypeList": ["dependencies"],
-      "updateTypes": ["patch"],
-      "automerge": true
-    },
-    {
-      "depTypeList": ["dependencies"],
-      "updateTypes": ["minor", "major"],
-      "automerge": false
     }
   ]
 }
