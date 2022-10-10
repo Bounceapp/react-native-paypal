@@ -97,10 +97,11 @@ export default function App() {
 }
 ```
 
-## Contributing
+## 👏 Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
 ## License
 
-This project is [MIT](https://img.shields.io/github/license/stripe/stripe-react-native) licensed.
+The source code is made available under the [MIT license](LICENSE). Some of the dependencies can be licensed differently, with the BSD license, for example.
+
