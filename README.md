@@ -1,17 +1,21 @@
 # @bounceapp/react-native-paypal
 
-[![Version](https://img.shields.io/npm/v/@bounceapp/react-native-paypal.svg)](https://www.npmjs.com/package/@bounceapp/react-native-paypal) [![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg)](https://bounceapp.github.io/react-native-paypal/) [![License](https://img.shields.io/github/license/stripe/stripe-react-native)](https://github.com/Bounceapp/react-native-paypal/blob/master/LICENSE)
+[![Package version](https://img.shields.io/npm/v/@bounceapp/react-native-paypal?style=for-the-badge&labelColor=000000)](https://www.npmjs.com/package/@bounceapp/react-native-paypal)
+[![MIT license](https://img.shields.io/badge/License-MIT-brightgreen.svg?style=for-the-badge&labelColor=000000)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-hotpink.svg?style=for-the-badge&labelColor=000000)](https://github.com/dcangulo/@bounceapp/react-native-paypal/pulls)
 
 React Native wrapper to bridge PayPal iOS and Android SDK,
 support only `requestBillingAgreement` for the moment
-
-[📘 browse the SDK reference](https://bounceapp.github.io/react-native-paypal/).
 
 ### Platform Compatibility
 
 | Android Device | Android Emulator | iOS Device | iOS Simulator | Expo managed | Web |
 | -------------- | ---------------- | ---------- | ------------- | ------------ | --- |
 | ✅             | ✅               | ✅         | ✅            | ❌           | ❌  |
+
+## Documentation
+
+[API Reference](https://bounceapp.github.io/react-native-paypal/).
 
 ## Installation
 
