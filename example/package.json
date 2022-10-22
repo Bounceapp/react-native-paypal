@@ -20,7 +20,7 @@
     "@babel/runtime": "7.19.4",
     "@types/babel__core": "7.1.19",
     "@types/react": "17.0.48",
-    "@types/react-native": "0.70.5",
+    "@types/react-native": "0.70.6",
     "babel-plugin-module-resolver": "4.1.0",
     "metro-react-native-babel-preset": "0.73.2",
     "patch-package": "6.4.7",
