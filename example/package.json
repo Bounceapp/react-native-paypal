@@ -23,7 +23,7 @@
     "@types/react-native": "0.70.6",
     "babel-plugin-module-resolver": "4.1.0",
     "metro-react-native-babel-preset": "0.73.3",
-    "patch-package": "6.4.7",
+    "patch-package": "6.5.0",
     "postinstall-postinstall": "2.1.0"
   }
 }
