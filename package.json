@@ -58,7 +58,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "7.19.1",
-    "@commitlint/config-conventional": "17.1.0",
+    "@commitlint/config-conventional": "17.2.0",
     "@react-native-community/eslint-config": "3.0.3",
     "@release-it/conventional-changelog": "5.1.1",
     "@types/eslint": "8.4.10",
@@ -69,7 +69,7 @@
     "@types/react-native": "0.70.6",
     "@typescript-eslint/eslint-plugin": "5.41.0",
     "@typescript-eslint/parser": "5.41.0",
-    "commitlint": "17.1.2",
+    "commitlint": "17.2.0",
     "eslint": "8.26.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-prettier": "4.2.1",
