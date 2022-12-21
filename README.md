@@ -9,7 +9,7 @@ support only `requestBillingAgreement` for the moment
 
 ### Platform Compatibility
 
-| Android Device | Android Emulator | iOS Device | iOS Simulator | Expo managed | Web |
+| Android Device | Android Emulator | iOS Device | iOS Simulator | Expo GO | Web |
 | -------------- | ---------------- | ---------- | ------------- | ------------ | --- |
 | ✅             | ✅               | ✅         | ✅            | ❌           | ❌  |
 
