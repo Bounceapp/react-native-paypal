@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "react-native-paypal-example",
+    "slug": "react-native-paypal-example",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.reactnativepaypalexample"
+    },
+    "android": {
+      "package": "com.reactnativepaypalexample",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "com.reactnativepaypalexample.braintree"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
+    },
+    "platforms": ["android", "ios"]
+  }
+}

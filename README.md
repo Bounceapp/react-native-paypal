@@ -21,8 +21,6 @@ support only `requestBillingAgreement` for the moment
 
 ```sh
 yarn add @bounceapp/react-native-paypal react-native-svg
-or
-npm install @bounceapp/react-native-paypal react-native-svg
 ```
 
 ### Bare Workflow
@@ -104,4 +102,3 @@ See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the 
 ## License
 
 The source code is made available under the [MIT license](LICENSE). Some of the dependencies can be licensed differently, with the BSD license, for example.
-

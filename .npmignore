@@ -4,10 +4,10 @@ docs/
 scripts/
 .tmp/
 .github/
-lib/typescript/example/
 **/__tests__
 **/__fixtures__
 **/__mocks__
+.eslintcache
 
 android/src/androidTest/
 android/src/test/
