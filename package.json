@@ -44,6 +44,8 @@
   "scripts": {
     "test": "jest --passWithNoTests",
     "typecheck": "tsc",
+    "lint": "npx eslint . --ext .ts,.tsx,.js",
+    "lint:fix": "npx eslint . --ext .ts,.tsx,.js --fix",
     "lint-staged": "lint-staged --allow-empty",
     "prepare": "bob build && husky install",
     "release": "release-it",
