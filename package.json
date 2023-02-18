@@ -76,7 +76,7 @@
     "@types/jest": "28.1.8",
     "@types/prettier": "2.7.2",
     "@types/react": "18.0.9",
-    "@types/react-native": "0.71.2",
+    "@types/react-native": "0.71.3",
     "@commitlint/cli": "17.4.4",
     "@commitlint/config-conventional": "17.4.4",
     "@typescript-eslint/eslint-plugin": "5.51.0",
