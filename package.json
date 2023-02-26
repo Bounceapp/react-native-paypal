@@ -67,7 +67,7 @@
     "pod-install": "0.1.38",
     "react": "18.1.0",
     "react-native": "0.70.0",
-    "react-native-builder-bob": "0.20.1",
+    "react-native-builder-bob": "0.20.4",
     "react-native-svg": "12.4.3",
     "expo": "47.0.13",
     "release-it": "15.6.0",
