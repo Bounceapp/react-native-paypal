@@ -20,7 +20,7 @@
     "expo-status-bar": "~1.4.2"
   },
   "devDependencies": {
-    "@babel/core": "7.21.0",
+    "@babel/core": "7.21.3",
     "@types/react-native": "0.71.3",
     "babel-preset-expo": "9.3.0",
     "typescript": "4.9.5",
