@@ -61,7 +61,7 @@
     "prettier": "2.8.4",
     "@babel/eslint-parser": "7.21.3",
     "@react-native-community/eslint-config": "3.2.0",
-    "@types/eslint": "8.21.2",
+    "@types/eslint": "8.21.3",
     "@types/eslint-plugin-prettier": "3.1.0",
     "commitlint": "17.4.4",
     "pod-install": "0.1.38",
