@@ -69,7 +69,7 @@
     "react-native": "0.70.0",
     "react-native-builder-bob": "0.20.4",
     "react-native-svg": "12.4.3",
-    "expo": "47.0.13",
+    "expo": "47.0.14",
     "release-it": "15.10.1",
     "typedoc": "0.23.28",
     "@release-it/conventional-changelog": "5.1.1",
