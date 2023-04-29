@@ -71,7 +71,7 @@
     "react-native-svg": "12.4.3",
     "expo": "47.0.14",
     "release-it": "15.10.1",
-    "typedoc": "0.24.5",
+    "typedoc": "0.24.6",
     "@release-it/conventional-changelog": "5.1.1",
     "@types/jest": "28.1.8",
     "@types/prettier": "2.7.2",
