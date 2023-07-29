@@ -2058,14 +2058,14 @@
     wonka "^4.0.14"
 
 "@xmldom/xmldom@^0.8.8":
-  version "0.8.8"
-  resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.8.8.tgz#d0d11511cbc1de77e53342ad1546a4d487d6ea72"
-  integrity sha512-0LNz4EY8B/8xXY86wMrQ4tz6zEHZv9ehFMJPm8u2gq5lQ71cfRKdaKyxfJAx5aUoyzx0qzgURblTisPGgz3d+Q==
+  version "0.8.10"
+  resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.8.10.tgz#a1337ca426aa61cef9fe15b5b28e340a72f6fa99"
+  integrity sha512-2WALfTl4xo2SkGCYRt6rDTFfk9R1czmBvUQy12gK2KuRKIpWEhcbbzy8EZXtz/jkRqHX8bFEc6FC1HjX4TUWYw==
 
 "@xmldom/xmldom@~0.7.7":
-  version "0.7.11"
-  resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.7.11.tgz#adecc134521274711d071d5b0200907cc83b38ee"
-  integrity sha512-UDi3g6Jss/W5FnSzO9jCtQwEpfymt0M+sPPlmLhDH6h2TJ8j4ESE/LpmNPBij15J5NKkk4/cg/qoVMdWI3vnlQ==
+  version "0.7.13"
+  resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.7.13.tgz#ff34942667a4e19a9f4a0996a76814daac364cf3"
+  integrity sha512-lm2GW5PkosIzccsaZIz7tp8cPADSIlIHWDFTR1N0SzfinhhYgeIQjFMz4rYzanCScr3DqQLeomUDArp6MWKm+g==
 
 abort-controller@^3.0.0:
   version "3.0.0"
@@ -3415,9 +3415,9 @@ expo-modules-core@1.2.7:
     invariant "^2.2.4"
 
 expo-splash-screen@~0.20.0:
-  version "0.20.4"
-  resolved "https://registry.yarnpkg.com/expo-splash-screen/-/expo-splash-screen-0.20.4.tgz#abe77d7a9612627f7048d885cfc5a696e3d3ee3d"
-  integrity sha512-JMfVqkb3Fbt9mdrWfSkTxaIkjd2RMJmQ19/JN+4Gk2MVEP4L1yzTQLomneH5+z/N5x48Tk3ZN+bFhtUXIlfjzg==
+  version "0.20.5"
+  resolved "https://registry.yarnpkg.com/expo-splash-screen/-/expo-splash-screen-0.20.5.tgz#ebeba3e3977606830f74f506ab2cc25042bb7efd"
+  integrity sha512-nTALYdjHpeEA30rdOWSguxn72ctv8WM8ptuUgpfRgsWyn4i6rwYds/rBXisX69XO5fg+XjHAQqijGx/b28+3tg==
   dependencies:
     "@expo/prebuild-config" "6.2.6"
 
@@ -6161,9 +6161,9 @@ semver@7.5.3:
     lru-cache "^6.0.0"
 
 semver@^5.5.0, semver@^5.6.0:
-  version "5.7.1"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
-  integrity sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==
+  version "5.7.2"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.2.tgz#48d55db737c3287cd4835e17fa13feace1c41ef8"
+  integrity sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==
 
 semver@^6.3.0, semver@^6.3.1:
   version "6.3.1"
@@ -6521,9 +6521,9 @@ structured-headers@^0.4.1:
   integrity sha512-0MP/Cxx5SzeeZ10p/bZI0S6MpgD+yxAhi1BOQ34jgnMXsCq3j1t6tQnZu+KdlL7dvJTLT3g9xN8tl10TqgFMcg==
 
 sucrase@^3.20.0:
-  version "3.32.0"
-  resolved "https://registry.yarnpkg.com/sucrase/-/sucrase-3.32.0.tgz#c4a95e0f1e18b6847127258a75cf360bc568d4a7"
-  integrity sha512-ydQOU34rpSyj2TGyz4D2p8rbktIOZ8QY9s+DGLvFU1i5pWJE8vkpruCjGCMHsdXwnD7JDcS+noSwM/a7zyNFDQ==
+  version "3.34.0"
+  resolved "https://registry.yarnpkg.com/sucrase/-/sucrase-3.34.0.tgz#1e0e2d8fcf07f8b9c3569067d92fbd8690fb576f"
+  integrity sha512-70/LQEZ07TEcxiU2dz51FKaE6hCTWC6vr7FOk3Gr0U60C3shtAN+H+BFr9XlYe5xqf3RA8nrc+VIwzCfnxuXJw==
   dependencies:
     "@jridgewell/gen-mapping" "^0.3.2"
     commander "^4.0.0"
