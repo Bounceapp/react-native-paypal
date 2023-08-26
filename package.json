@@ -54,7 +54,7 @@
     "bootstrap": "yarn example && yarn"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "7.22.10",
+    "@babel/eslint-parser": "7.22.11",
     "@commitlint/cli": "17.7.1",
     "@commitlint/config-conventional": "17.7.0",
     "@expo/prebuild-config": "~6.2.4",
