@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "@expo/prebuild-config": "~6.7.0",
+    "@expo/prebuild-config": "~6.8.0",
     "@types/react": "~18.2.14",
     "babel-preset-expo": "^9.3.0",
     "typescript": "^5.1.3"

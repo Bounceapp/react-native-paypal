@@ -1529,10 +1529,33 @@
     xcode "^3.0.1"
     xml2js "0.6.0"
 
-"@expo/config-plugins@~7.8.0", "@expo/config-plugins@~7.8.2":
+"@expo/config-plugins@~7.8.2":
   version "7.8.4"
   resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-7.8.4.tgz#533b5d536c1dc8b5544d64878b51bda28f2e1a1f"
   integrity sha512-hv03HYxb/5kX8Gxv/BTI8TLc9L06WzqAfHRRXdbar4zkLcP2oTzvsLEF4/L/TIpD3rsnYa0KU42d0gWRxzPCJg==
+  dependencies:
+    "@expo/config-types" "^50.0.0-alpha.1"
+    "@expo/fingerprint" "^0.6.0"
+    "@expo/json-file" "~8.3.0"
+    "@expo/plist" "^0.1.0"
+    "@expo/sdk-runtime-versions" "^1.0.0"
+    "@react-native/normalize-color" "^2.0.0"
+    chalk "^4.1.2"
+    debug "^4.3.1"
+    find-up "~5.0.0"
+    getenv "^1.0.0"
+    glob "7.1.6"
+    resolve-from "^5.0.0"
+    semver "^7.5.3"
+    slash "^3.0.0"
+    slugify "^1.6.6"
+    xcode "^3.0.1"
+    xml2js "0.6.0"
+
+"@expo/config-plugins@~7.9.0":
+  version "7.9.1"
+  resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-7.9.1.tgz#fe4f7e4f9d4e87f2dcf2344ffdc59eb466dd5d2e"
+  integrity sha512-ICt6Jed1J0tPYMQrJ8K5Qusgih2I6pZ2PU4VSvxsN3T4n97L13XpYV1vyq1Uc/HMl3UhOwldipmgpEbCfeDqsQ==
   dependencies:
     "@expo/config-types" "^50.0.0-alpha.1"
     "@expo/fingerprint" "^0.6.0"
@@ -1796,13 +1819,13 @@
     semver "7.5.3"
     xml2js "0.6.0"
 
-"@expo/prebuild-config@~6.7.0":
-  version "6.7.4"
-  resolved "https://registry.yarnpkg.com/@expo/prebuild-config/-/prebuild-config-6.7.4.tgz#b3e4c8545d7a101bf1fc263c5b7290abc4635e69"
-  integrity sha512-x8EUdCa8DTMZ/dtEXjHAdlP+ljf6oSeSKNzhycXiHhpMSMG9jEhV28ocCwc6cKsjK5GziweEiHwvrj6+vsBlhA==
+"@expo/prebuild-config@~6.8.0":
+  version "6.8.1"
+  resolved "https://registry.yarnpkg.com/@expo/prebuild-config/-/prebuild-config-6.8.1.tgz#5d562b1d6b2e5e4727a3c61acf1a4ed6117b94d8"
+  integrity sha512-ptK9e0dcj1eYlAWV+fG+QkuAWcLAT1AmtEbj++tn7ZjEj8+LkXRM73LCOEGaF0Er8i8ZWNnaVsgGW4vjgP5ZsA==
   dependencies:
     "@expo/config" "~8.5.0"
-    "@expo/config-plugins" "~7.8.0"
+    "@expo/config-plugins" "~7.9.0"
     "@expo/config-types" "^50.0.0-alpha.1"
     "@expo/image-utils" "^0.4.0"
     "@expo/json-file" "^8.2.37"
