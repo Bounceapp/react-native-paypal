@@ -1307,7 +1307,7 @@
     xcode "^3.0.1"
     xml2js "0.6.0"
 
-"@expo/config-plugins@~7.8.0", "@expo/config-plugins@~7.8.2":
+"@expo/config-plugins@~7.8.2":
   version "7.8.4"
   resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-7.8.4.tgz#533b5d536c1dc8b5544d64878b51bda28f2e1a1f"
   integrity sha512-hv03HYxb/5kX8Gxv/BTI8TLc9L06WzqAfHRRXdbar4zkLcP2oTzvsLEF4/L/TIpD3rsnYa0KU42d0gWRxzPCJg==
@@ -1353,6 +1353,27 @@
     xcode "^3.0.1"
     xml2js "0.6.0"
 
+"@expo/config-plugins@~8.0.0-beta.0":
+  version "8.0.4"
+  resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-8.0.4.tgz#1e781cd971fab27409ed2f8d621db6d29cce3036"
+  integrity sha512-Hi+xuyNWE2LT4LVbGttHJgl9brnsdWAhEB42gWKb5+8ae86Nr/KwUBQJsJppirBYTeLjj5ZlY0glYnAkDa2jqw==
+  dependencies:
+    "@expo/config-types" "^51.0.0-unreleased"
+    "@expo/json-file" "~8.3.0"
+    "@expo/plist" "^0.1.0"
+    "@expo/sdk-runtime-versions" "^1.0.0"
+    chalk "^4.1.2"
+    debug "^4.3.1"
+    find-up "~5.0.0"
+    getenv "^1.0.0"
+    glob "7.1.6"
+    resolve-from "^5.0.0"
+    semver "^7.5.4"
+    slash "^3.0.0"
+    slugify "^1.6.6"
+    xcode "^3.0.1"
+    xml2js "0.6.0"
+
 "@expo/config-types@^49.0.0-alpha.1":
   version "49.0.0"
   resolved "https://registry.yarnpkg.com/@expo/config-types/-/config-types-49.0.0.tgz#15ffef715285c06703f6fb7ec0cda853f645cc09"
@@ -1362,6 +1383,11 @@
   version "50.0.0"
   resolved "https://registry.yarnpkg.com/@expo/config-types/-/config-types-50.0.0.tgz#b534d3ec997ec60f8af24f6ad56244c8afc71a0b"
   integrity sha512-0kkhIwXRT6EdFDwn+zTg9R2MZIAEYGn1MVkyRohAd+C9cXOb5RA8WLQi7vuxKF9m1SMtNAUrf0pO+ENK0+/KSw==
+
+"@expo/config-types@^51.0.0-unreleased":
+  version "51.0.0"
+  resolved "https://registry.yarnpkg.com/@expo/config-types/-/config-types-51.0.0.tgz#f5df238cd1237d7e4d9cc8217cdef3383c2a00cf"
+  integrity sha512-acn03/u8mQvBhdTQtA7CNhevMltUhbSrpI01FYBJwpVntufkU++ncQujWKlgY/OwIajcfygk1AY4xcNZ5ImkRA==
 
 "@expo/config@8.1.2", "@expo/config@~8.1.0":
   version "8.1.2"
@@ -1394,6 +1420,23 @@
     require-from-string "^2.0.2"
     resolve-from "^5.0.0"
     semver "7.5.3"
+    slugify "^1.3.4"
+    sucrase "3.34.0"
+
+"@expo/config@~9.0.0-beta.0":
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/@expo/config/-/config-9.0.1.tgz#e7b79de5af29d5ab2a98a62c3cda31f03bd75827"
+  integrity sha512-0tjaXBstTbXmD4z+UMFBkh2SZFwilizSQhW6DlaTMnPG5ezuw93zSFEWAuEC3YzkpVtNQTmYzxAYjxwh6seOGg==
+  dependencies:
+    "@babel/code-frame" "~7.10.4"
+    "@expo/config-plugins" "~8.0.0-beta.0"
+    "@expo/config-types" "^51.0.0-unreleased"
+    "@expo/json-file" "^8.3.0"
+    getenv "^1.0.0"
+    glob "7.1.6"
+    require-from-string "^2.0.2"
+    resolve-from "^5.0.0"
+    semver "^7.6.0"
     slugify "^1.3.4"
     sucrase "3.34.0"
 
@@ -1494,10 +1537,26 @@
     semver "7.3.2"
     tempy "0.3.0"
 
-"@expo/json-file@^8.2.37", "@expo/json-file@~8.3.0":
-  version "8.3.0"
-  resolved "https://registry.yarnpkg.com/@expo/json-file/-/json-file-8.3.0.tgz#fc84af77b532a4e9bfb5beafd0e3b7f692b6bd7e"
-  integrity sha512-yROUeXJXR5goagB8c3muFLCzLmdGOvoPpR5yDNaXrnTp4euNykr9yW0wWhJx4YVRTNOPtGBnEbbJBW+a9q+S6g==
+"@expo/image-utils@^0.5.0":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@expo/image-utils/-/image-utils-0.5.1.tgz#06fade141facebcd8431355923d30f3839309942"
+  integrity sha512-U/GsFfFox88lXULmFJ9Shfl2aQGcwoKPF7fawSCLixIKtMCpsI+1r0h+5i0nQnmt9tHuzXZDL8+Dg1z6OhkI9A==
+  dependencies:
+    "@expo/spawn-async" "^1.7.2"
+    chalk "^4.0.0"
+    fs-extra "9.0.0"
+    getenv "^1.0.0"
+    jimp-compact "0.16.1"
+    node-fetch "^2.6.0"
+    parse-png "^2.1.0"
+    resolve-from "^5.0.0"
+    semver "^7.6.0"
+    tempy "0.3.0"
+
+"@expo/json-file@^8.2.37", "@expo/json-file@^8.3.0", "@expo/json-file@~8.3.0":
+  version "8.3.3"
+  resolved "https://registry.yarnpkg.com/@expo/json-file/-/json-file-8.3.3.tgz#7926e3592f76030ce63d6b1308ac8f5d4d9341f4"
+  integrity sha512-eZ5dld9AD0PrVRiIWpRkm5aIoWBw3kAyd8VkuWEy92sEthBKDDDHAnK2a0dw0Eil6j7rK7lS/Qaq/Zzngv2h5A==
   dependencies:
     "@babel/code-frame" "~7.10.4"
     json5 "^2.2.2"
@@ -1597,20 +1656,21 @@
     semver "7.5.3"
     xml2js "0.6.0"
 
-"@expo/prebuild-config@6.7.4":
-  version "6.7.4"
-  resolved "https://registry.yarnpkg.com/@expo/prebuild-config/-/prebuild-config-6.7.4.tgz#b3e4c8545d7a101bf1fc263c5b7290abc4635e69"
-  integrity sha512-x8EUdCa8DTMZ/dtEXjHAdlP+ljf6oSeSKNzhycXiHhpMSMG9jEhV28ocCwc6cKsjK5GziweEiHwvrj6+vsBlhA==
+"@expo/prebuild-config@7.0.3":
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/@expo/prebuild-config/-/prebuild-config-7.0.3.tgz#d7f66745de6f0b17b15ed2f1417f91c6ba0b591b"
+  integrity sha512-Kvxy/oQzkxwXLvAmwb+ygxuRn4xUUN2+mVJj3KDe4bRVCNyDPs7wlgdokF3twnWjzRZssUzseMkhp+yHPjAEhA==
   dependencies:
-    "@expo/config" "~8.5.0"
-    "@expo/config-plugins" "~7.8.0"
-    "@expo/config-types" "^50.0.0-alpha.1"
-    "@expo/image-utils" "^0.4.0"
-    "@expo/json-file" "^8.2.37"
+    "@expo/config" "~9.0.0-beta.0"
+    "@expo/config-plugins" "~8.0.0-beta.0"
+    "@expo/config-types" "^51.0.0-unreleased"
+    "@expo/image-utils" "^0.5.0"
+    "@expo/json-file" "^8.3.0"
+    "@react-native/normalize-colors" "~0.74.83"
     debug "^4.3.1"
     fs-extra "^9.0.0"
     resolve-from "^5.0.0"
-    semver "7.5.3"
+    semver "^7.6.0"
     xml2js "0.6.0"
 
 "@expo/prebuild-config@~6.8.0":
@@ -1654,7 +1714,7 @@
   dependencies:
     cross-spawn "^6.0.5"
 
-"@expo/spawn-async@^1.5.0":
+"@expo/spawn-async@^1.5.0", "@expo/spawn-async@^1.7.2":
   version "1.7.2"
   resolved "https://registry.yarnpkg.com/@expo/spawn-async/-/spawn-async-1.7.2.tgz#fcfe66c3e387245e72154b1a7eae8cada6a47f58"
   integrity sha512-QdWi16+CHB9JYP7gma19OVVg0BFkvU8zNj9GjWorYI8Iv8FUxjOCcYRuAmX4s/h91e4e7BPsskc8cSrZYho9Ew==
@@ -2056,10 +2116,10 @@
   resolved "https://registry.yarnpkg.com/@react-native/normalize-color/-/normalize-color-2.1.0.tgz#939b87a9849e81687d3640c5efa2a486ac266f91"
   integrity sha512-Z1jQI2NpdFJCVgpY+8Dq/Bt3d+YUi1928Q+/CZm/oh66fzM0RUl54vvuXlPJKybH4pdCZey1eDTPaLHkMPNgWA==
 
-"@react-native/normalize-colors@*":
-  version "0.73.0"
-  resolved "https://registry.yarnpkg.com/@react-native/normalize-colors/-/normalize-colors-0.73.0.tgz#23e15cf2a2b73ac7e5e6df8d5b86b173cfb35a3f"
-  integrity sha512-EmSCmJ0djeMJadeFsms6Pl/R85i9xSJMc+tyJu/GEMkKXBVyYQyqanK4RHFU0v8MO90OWj+SiFXjCkKYiJ6mkg==
+"@react-native/normalize-colors@*", "@react-native/normalize-colors@~0.74.83":
+  version "0.74.83"
+  resolved "https://registry.yarnpkg.com/@react-native/normalize-colors/-/normalize-colors-0.74.83.tgz#86ef925bacf219d74df115bcfb615f62d8142e85"
+  integrity sha512-jhCY95gRDE44qYawWVvhTjTplW1g+JtKTKM3f8xYT1dJtJ8QWv+gqEtKcfmOHfDkSDaMKG0AGBaDTSK8GXLH8Q==
 
 "@react-native/normalize-colors@^0.72.0":
   version "0.72.0"
@@ -3474,17 +3534,17 @@ expo-modules-core@1.5.13:
     compare-versions "^3.4.0"
     invariant "^2.2.4"
 
-expo-splash-screen@~0.26.0:
-  version "0.26.4"
-  resolved "https://registry.yarnpkg.com/expo-splash-screen/-/expo-splash-screen-0.26.4.tgz#bc1fb226c6eae03ee351a3ebe5521a37f868cbc7"
-  integrity sha512-2DwofTQ0FFQCsvDysm/msENsbyNsJiAJwK3qK/oXeizECAPqD7bK19J4z9kuEbr7ORPX9MLnTQYKl6kmX3keUg==
+expo-splash-screen@~0.27.0:
+  version "0.27.4"
+  resolved "https://registry.yarnpkg.com/expo-splash-screen/-/expo-splash-screen-0.27.4.tgz#d7a86a2a1a87824ed47388aa8836e91b61268c62"
+  integrity sha512-JwepK1FjbwiOK2nwIFanfzj9s7UXYnpTwLX8A9v7Ec3K4V28yu8HooSc9X60cftBw9UZrs8Gwj4PgTpQabBS9A==
   dependencies:
-    "@expo/prebuild-config" "6.7.4"
+    "@expo/prebuild-config" "7.0.3"
 
-expo-status-bar@~1.11.0:
-  version "1.11.1"
-  resolved "https://registry.yarnpkg.com/expo-status-bar/-/expo-status-bar-1.11.1.tgz#a11318741d361048c11db2b16c4364a79a74af30"
-  integrity sha512-ddQEtCOgYHTLlFUe/yH67dDBIoct5VIULthyT3LRJbEwdpzAgueKsX2FYK02ldh440V87PWKCamh7R9evk1rrg==
+expo-status-bar@~1.12.0:
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/expo-status-bar/-/expo-status-bar-1.12.1.tgz#52ce594aab5064a0511d14375364d718ab78aa66"
+  integrity sha512-/t3xdbS8KB0prj5KG5w7z+wZPFlPtkgs95BsmrP/E7Q0xHXTcDcQ6Cu2FkFuRM+PKTb17cJDnLkawyS5vDLxMA==
 
 expo@~49.0.0:
   version "49.0.23"
@@ -6050,12 +6110,10 @@ semver@^6.3.0, semver@^6.3.1:
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.1.tgz#556d2ef8689146e46dcea4bfdd095f3434dffcb4"
   integrity sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==
 
-semver@^7.3.5, semver@^7.5.3:
-  version "7.6.0"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-7.6.0.tgz#1a46a4db4bffcccd97b743b5005c8325f23d4e2d"
-  integrity sha512-EnwXhrlwXMk9gKu5/flx5sv/an57AkRplG3hTK68W7FRDN+k+OWBj65M7719OkA82XLBxrcX0KSHj+X5COhOVg==
-  dependencies:
-    lru-cache "^6.0.0"
+semver@^7.3.5, semver@^7.5.3, semver@^7.5.4, semver@^7.6.0:
+  version "7.6.2"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.6.2.tgz#1e3b34759f896e8f14d6134732ce798aeb0c6e13"
+  integrity sha512-FNAIBWCx9qcRhoHcgcJ0gvU7SN1lYU2ZXuSfl04bSC5OpvDHFyJCjdNHomPXxjQlCBU67YW64PzY7/VIEH7F2w==
 
 send@0.18.0, send@^0.18.0:
   version "0.18.0"
