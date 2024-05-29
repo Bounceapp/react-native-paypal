@@ -25,8 +25,7 @@
     "editor.formatOnSave": true
   },
   "editor.codeActionsOnSave": {
-    "source.organizeImports": true,
-    "source.fixAll.eslint": true
-  },
-  "eslint.packageManager": "yarn"
+    "source.organizeImports": "explicit",
+    "source.fixAll.eslint": "explicit"
+  }
 }
