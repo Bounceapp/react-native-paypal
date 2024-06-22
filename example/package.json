@@ -24,6 +24,6 @@
     "@expo/prebuild-config": "~7.0.0",
     "@types/react": "~18.2.79",
     "babel-preset-expo": "~11.0.0",
-    "typescript": "~5.4.0"
+    "typescript": "~5.5.0"
   }
 }
