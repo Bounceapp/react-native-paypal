@@ -87,7 +87,7 @@
     "prettier": "2.8.8",
     "react": "18.2.0",
     "react-native": "0.74.1",
-    "react-native-builder-bob": "0.30.3",
+    "react-native-builder-bob": "0.31.0",
     "react-native-svg": "15.2.0",
     "release-it": "15.11.0",
     "typedoc": "0.26.11",
