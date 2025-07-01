@@ -21,8 +21,7 @@ class Paypal: NSObject {
     let isShippingAddressRequired = options["shippingAddressRequired"] as? Bool
 
     braintreeClient = BTAPIClient(authorization: clientToken)!
-    let payPalDriver = BTPayPalDriver(apiClient: braintreeClient!)
-    // @see https://braintree.github.io/braintree_ios/current/Classes/BTPayPalRequest.html#/c:objc(cs)BTPayPalRequest(py)localeCode
+    let payPalClient = BTPayPalClient(apiClient: braintreeClient!)
     let request = BTPayPalVaultRequest()
     request.billingAgreementDescription = billingAgreementDescription
     if let merchantAccountID = merchantAccountID {
@@ -32,22 +31,22 @@ class Paypal: NSObject {
       request.displayName = displayName
     }
     if let localeCode = localeCode {
-      request.localeCode = localeCode
+      request.localeCode = BTPayPalLocaleCode(rawValue: localeCode) ?? .none
     }
     if let isShippingAddressRequired = isShippingAddressRequired {
       request.isShippingAddressRequired = isShippingAddressRequired
     }
 
-    payPalDriver.tokenizePayPalAccount(with: request) { (tokenizedPayPalAccount, error) -> Void in
+    payPalClient.tokenize(request) { (tokenizedPayPalAccount, error) -> Void in
       if let tokenizedPayPalAccount = tokenizedPayPalAccount {
         let result: NSDictionary = [
           "nonce": tokenizedPayPalAccount.nonce,
           "details": [
-            "payerId": tokenizedPayPalAccount.payerID,
-            "email": tokenizedPayPalAccount.email,
-            "firstName": tokenizedPayPalAccount.firstName,
-            "lastName": tokenizedPayPalAccount.lastName,
-            "phone": tokenizedPayPalAccount.phone
+            "payerId": tokenizedPayPalAccount.payerID ?? "",
+            "email": tokenizedPayPalAccount.email ?? "",
+            "firstName": tokenizedPayPalAccount.firstName ?? "",
+            "lastName": tokenizedPayPalAccount.lastName ?? "",
+            "phone": tokenizedPayPalAccount.phone ?? ""
           ]
         ]
 
