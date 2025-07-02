@@ -7,23 +7,19 @@
     "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "web": "expo start --web",
-    "eject": "expo eject"
+    "web": "expo start --web"
   },
   "dependencies": {
-    "@bounceapp/react-native-paypal": "../src",
-    "expo": "~53.0.12",
-    "expo-splash-screen": "~0.30.0",
-    "expo-status-bar": "~2.2.0",
+    "@bounceapp/react-native-paypal": "file:../",
+    "expo": "~53.0.16",
+    "expo-status-bar": "~2.2.3",
     "react": "19.0.0",
-    "react-native": "0.79.4",
+    "react-native": "0.79.5",
     "react-native-svg": "15.11.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0",
-    "@expo/prebuild-config": "~9.0.0",
+    "@babel/core": "^7.25.2",
     "@types/react": "~19.0.10",
-    "babel-preset-expo": "~13.0.0",
     "typescript": "~5.8.3"
   }
 }
