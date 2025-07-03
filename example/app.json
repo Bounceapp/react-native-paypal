@@ -4,9 +4,17 @@
     "slug": "react-native-paypal-example",
     "version": "1.0.0",
     "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.reactnativepaypalexample"
+      "bundleIdentifier": "com.ciaranbounce.example2"
     },
     "android": {
       "package": "com.reactnativepaypalexample",
@@ -20,8 +28,15 @@
           ],
           "category": ["BROWSABLE", "DEFAULT"]
         }
-      ]
+      ],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true
     },
-    "platforms": ["android", "ios"]
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
   }
 }
