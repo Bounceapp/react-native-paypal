@@ -90,7 +90,7 @@
     "react-native-builder-bob": "0.40.13",
     "react-native-svg": "15.11.2",
     "release-it": "15.11.0",
-    "typedoc": "0.28.10",
+    "typedoc": "0.28.11",
     "typescript": "~5.9.0"
   },
   "peerDependencies": {
