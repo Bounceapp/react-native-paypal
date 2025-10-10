@@ -1,10 +1,10 @@
-import * as React from "react"
+import React from "react"
 import { Pressable, StyleSheet } from "react-native"
 
 import type { PaypalButtonProps } from "../types"
-import PaypalLogo from "./PaypalLogo"
+import { PaypalLogo } from "./PaypalLogo"
 
-const PaypalButton = ({
+export const PaypalButton = ({
   style,
   disabled = false,
   onPress,
@@ -39,5 +39,3 @@ const styles = StyleSheet.create({
     backgroundColor: "#E5E7EB",
   },
 })
-
-export default PaypalButton
