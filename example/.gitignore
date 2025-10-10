@@ -8,10 +8,6 @@ node_modules/
 dist/
 web-build/
 expo-env.d.ts
-ios/
-android/
-.tmp
-*.pbxproj
 
 # Native
 .kotlin/
@@ -39,3 +35,7 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# generated native folders
+/ios
+/android

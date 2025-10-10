@@ -11,15 +11,16 @@
   },
   "dependencies": {
     "@bounceapp/react-native-paypal": "file:../",
-    "expo": "~53.0.16",
-    "expo-status-bar": "~2.2.3",
-    "react": "19.0.0",
-    "react-native": "0.79.5",
-    "react-native-svg": "15.11.2"
+    "expo": "~54.0.13",
+    "expo-status-bar": "~3.0.8",
+    "expo-system-ui": "~6.0.7",
+    "react": "19.1.0",
+    "react-native": "0.81.4",
+    "react-native-safe-area-context": "~5.6.0",
+    "react-native-svg": "15.12.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.2",
-    "@types/react": "~19.0.10",
-    "typescript": "~5.9.0"
+    "@types/react": "~19.1.0",
+    "typescript": "~5.9.2"
   }
 }
