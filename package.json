@@ -2,7 +2,7 @@
   "name": "@bounceapp/react-native-paypal",
   "private": false,
   "license": "MIT",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "React Native wrapper to bridge PayPal iOS and Android SDK",
   "keywords": [
     "expo",
