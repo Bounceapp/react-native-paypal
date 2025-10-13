@@ -1,9 +1,9 @@
-import * as React from "react"
+import React from "react"
 import Svg, { Path } from "react-native-svg"
 
 import type { PaypalLogoProps } from "../types"
 
-const PaypalLogo = (props: PaypalLogoProps) => (
+export const PaypalLogo = (props: PaypalLogoProps) => (
   <Svg viewBox="0 0 101 32" {...props}>
     <Path
       fill="#003087"
@@ -15,5 +15,3 @@ const PaypalLogo = (props: PaypalLogoProps) => (
     />
   </Svg>
 )
-
-export default PaypalLogo

@@ -4,7 +4,8 @@ import {
   RequestBillingAgreementResponse,
 } from "@bounceapp/react-native-paypal"
 import React, { useState } from "react"
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native"
+import { ScrollView, StyleSheet, Text, View } from "react-native"
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context"
 
 export default function App() {
   const [loading, setLoading] = useState(false)
@@ -27,16 +28,20 @@ export default function App() {
   }
 
   return (
-    <SafeAreaView style={styles.screen}>
-      <ScrollView style={styles.content}>
-        {payload && (
-          <Text style={styles.result}>{JSON.stringify(payload, null, 4)}</Text>
-        )}
-      </ScrollView>
-      <View style={styles.bottomBar}>
-        <PaypalButton onPress={onPress} disabled={loading} />
-      </View>
-    </SafeAreaView>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.screen}>
+        <ScrollView style={styles.content}>
+          {payload && (
+            <Text style={styles.result}>
+              {JSON.stringify(payload, null, 4)}
+            </Text>
+          )}
+        </ScrollView>
+        <View style={styles.bottomBar}>
+          <PaypalButton onPress={onPress} disabled={loading} />
+        </View>
+      </SafeAreaView>
+    </SafeAreaProvider>
   )
 }
 

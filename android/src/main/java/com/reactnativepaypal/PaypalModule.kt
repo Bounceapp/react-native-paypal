@@ -137,7 +137,7 @@ class PaypalModule(reactContext: ReactApplicationContext): ReactContextBaseJavaM
 
   private fun setup(token: String?) {
     if (mBraintreeClient == null || token != mToken) {
-      mCurrentActivity = currentActivity as FragmentActivity?
+      mCurrentActivity = reactApplicationContext.currentActivity as FragmentActivity?
       mBraintreeClient = BraintreeClient(mContext, token!!)
       mToken = token
     }
