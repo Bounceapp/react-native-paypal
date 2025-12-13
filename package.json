@@ -87,7 +87,7 @@
     "prettier": "2.8.8",
     "react": "19.1.0",
     "react-native": "0.81.4",
-    "react-native-builder-bob": "0.40.16",
+    "react-native-builder-bob": "0.40.17",
     "react-native-safe-area-context": "~5.6.0",
     "react-native-svg": "15.12.1",
     "release-it": "15.11.0",
