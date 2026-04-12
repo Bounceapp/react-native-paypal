@@ -91,7 +91,7 @@
     "react-native-safe-area-context": "~5.7.0",
     "react-native-svg": "15.12.1",
     "release-it": "15.11.0",
-    "typedoc": "0.28.18",
+    "typedoc": "0.28.19",
     "typescript": "~5.9.2"
   },
   "peerDependencies": {
