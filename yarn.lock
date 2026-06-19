@@ -8656,10 +8656,10 @@ react-is@^18.0.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.3.1.tgz#e83557dc12eae63a99e003a46388b1dcbb44db7e"
   integrity sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==
 
-react-native-builder-bob@0.42.1:
-  version "0.42.1"
-  resolved "https://registry.yarnpkg.com/react-native-builder-bob/-/react-native-builder-bob-0.42.1.tgz#cd1332ce94b61b1e2f9ee0da2c7bfe6ddb6e4cda"
-  integrity sha512-piw301vvc+lDydNkKJfpJfLFyKH5ORcdFeHUUiSo/NIxhAT2SU8TZjvYyZsUmTpCPKwnapmZis3fRSOJpJTCkw==
+react-native-builder-bob@0.43.0:
+  version "0.43.0"
+  resolved "https://registry.yarnpkg.com/react-native-builder-bob/-/react-native-builder-bob-0.43.0.tgz#176a17c3c1057a90dfae010c1d0f7a55ac70955a"
+  integrity sha512-suE1OYf0umMQvzzQ+4Ba+5xMc8jLu60ILQi85x8SCBaBtVUSJfcaGvlv6+34xxXgy+a2PuyNzoOXr9STEweLrQ==
   dependencies:
     "@babel/core" "^7.29.0"
     "@babel/plugin-transform-flow-strip-types" "^7.27.1"
@@ -8680,18 +8680,9 @@ react-native-builder-bob@0.42.1:
     json5 "^2.2.3"
     kleur "^4.1.5"
     prompts "^2.4.2"
-    react-native-monorepo-config "^0.3.3"
     typescript "^6.0.3"
     which "^6.0.1"
     yargs "^18.0.0"
-
-react-native-monorepo-config@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/react-native-monorepo-config/-/react-native-monorepo-config-0.3.3.tgz#0834daf3ec496d19c73e2d0184929305a987feef"
-  integrity sha512-d1kjHRVsbd/yVkFb5rYxWYiWVzCqJgUzcc499ejfc8jH6q6XYB4U+dNpX/HsxdXZLpzEhmKvgq0PsjRAIdAVeA==
-  dependencies:
-    escape-string-regexp "^5.0.0"
-    fast-glob "^3.3.3"
 
 react-native-safe-area-context@~5.8.0:
   version "5.8.0"
