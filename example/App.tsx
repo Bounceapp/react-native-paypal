@@ -20,7 +20,7 @@ export default function App() {
         clientToken: "CLIENT_TOKEN",
       })
       setPayload(res)
-    } catch (error) {
+    } catch (_error) {
       setPayload(null)
     }
 
