@@ -2,6 +2,11 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "baseUrl": ".",
+    // Only auto-include these global type packages. Without this, tsc pulls in
+    // every directory under node_modules/@types -- including deprecated stubs
+    // hoisted from transitive deps (parse-url -> @types/parse-path) that ship no
+    // entry point and fail the build with TS2688.
+    "types": ["jest", "node"],
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
