@@ -18,6 +18,7 @@ export default function App() {
     try {
       const res = await requestBillingAgreement({
         clientToken: "CLIENT_TOKEN",
+        appLinkReturnUrl: "https://example.com",
       })
       setPayload(res)
     } catch (error) {
