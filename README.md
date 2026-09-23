@@ -17,6 +17,9 @@ support only `requestBillingAgreement` for the moment
 
 [API Reference](https://bounceapp.github.io/react-native-paypal/).
 
+> **Upgrading from 0.8.x?** 1.0.0 moves to Braintree Android v5 and iOS v7 and
+> is a breaking release. See the [migration guide](MIGRATION.md).
+
 ## Installation
 
 ```sh
