@@ -21,6 +21,17 @@
       "intentFilters": [
         {
           "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "example.com"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        },
+        {
+          "action": "VIEW",
           "data": [
             {
               "scheme": "com.reactnativepaypalexample.braintree"
