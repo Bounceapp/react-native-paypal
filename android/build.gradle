@@ -31,4 +31,6 @@ dependencies {
   // module's compile classpath unless declared. 1.9.0 is what an SDK 56 app
   // already resolves.
   implementation "androidx.activity:activity:1.9.0"
+
+  testImplementation "junit:junit:4.13.2"
 }
