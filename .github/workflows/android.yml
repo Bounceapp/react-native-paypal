@@ -54,3 +54,22 @@ jobs:
       - name: Compile library module
         run: ./gradlew :bounceapp-react-native-paypal:assembleDebug --console=plain
         working-directory: example/android
+
+  detekt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Setup JDK
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "17"
+      # Keyed on the script, which pins the detekt version and its checksum.
+      - name: Cache detekt
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/react-native-paypal
+          key: detekt-${{ hashFiles('scripts/detekt.sh') }}
+      - name: Lint the Android module
+        run: sh scripts/detekt.sh
