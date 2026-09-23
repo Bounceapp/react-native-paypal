@@ -1,0 +1,51 @@
+name: "iOS Build 🍎"
+
+# The Swift module had no compile coverage, the same gap android/ had before
+# the Android Build workflow existed. Braintree iOS v6 is already inactive and
+# deprecates in November 2026, so the v7 migration needs something to build
+# against before it touches a payments flow.
+#
+# Standard macos runners are free and unmetered for public repositories, so
+# this costs nothing here. Only larger runners (macos-*-xlarge) are billed.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  ios:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: ./.tool-versions
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Install example dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: example
+      - name: Prebuild example app
+        run: npx expo prebuild --platform ios --no-install
+        working-directory: example
+      - name: Install pods
+        run: pod install
+        working-directory: example/ios
+      # CocoaPods generates a scheme per pod, so the library is compiled on its
+      # own rather than via the whole app -- the counterpart of building
+      # :bounceapp_react-native-paypal on Android.
+      - name: Compile library pod
+        run: |
+          xcodebuild \
+            -workspace reactnativepaypalexample.xcworkspace \
+            -scheme react-native-paypal \
+            -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            -quiet \
+            build
+        working-directory: example/ios

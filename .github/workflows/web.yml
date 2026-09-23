@@ -1,0 +1,35 @@
+name: "Web Build 🌐"
+
+# This does NOT mean PayPal works on web -- requestBillingAgreement calls a
+# native module that does not exist there, and the README's ❌ stands. What it
+# guards is that importing this package does not break a consuming app's web
+# bundle. src/Paypal.ts reads NativeModules.Paypal at module scope, and any app
+# targeting react-native-web imports the package whether or not it ever calls
+# into PayPal.
+#
+# Runs on ubuntu, so it is both free and quick -- roughly a Metro bundle.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: ./.tool-versions
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Install example dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: example
+      - name: Export web bundle
+        run: npx expo export --platform web --output-dir ../.web-build
+        working-directory: example

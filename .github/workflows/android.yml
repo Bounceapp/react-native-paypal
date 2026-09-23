@@ -1,0 +1,45 @@
+name: "Android Build 🤖"
+
+# The Kotlin module had no compile coverage at all until this workflow existed,
+# which is how an AGP 9 incompatibility reached main and had to be reported by
+# an outside contributor (#628). React Native is not resolvable from android/
+# on its own -- RN stopped shipping node_modules/react-native/android around
+# 0.71 -- so the module is compiled the way consumers actually get it: as an
+# autolinked dependency of the prebuilt example app.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: ./.tool-versions
+      - name: Setup JDK
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v4
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Install example dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: example
+      - name: Prebuild example app
+        run: npx expo prebuild --platform android --no-install
+        working-directory: example
+      - name: Compile library module
+        run: ./gradlew :bounceapp_react-native-paypal:assembleDebug --console=plain
+        working-directory: example/android
