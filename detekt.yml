@@ -1,0 +1,13 @@
+# Builds on detekt's default configuration; only deviations are listed.
+style:
+  # Off by default. Enabled because CVR-13098 asked for exactly this class of
+  # leftover to stay out of the Android module.
+  UnusedImports:
+    active: true
+  # Early returns are how the flow exits at each stage, and the default cap of
+  # 2 would push it towards exceptions for control flow or `!!` instead. Guard
+  # clauses at the top are exempt; beyond those, allow one exit per Braintree
+  # stage -- creating the auth request, launching it -- plus the result.
+  ReturnCount:
+    excludeGuardClauses: true
+    max: 3
