@@ -32,6 +32,18 @@ jobs:
       - name: Prebuild example app
         run: npx expo prebuild --platform ios --no-install
         working-directory: example
+      # Compiling proves the module builds, not that the app loads it: a
+      # podspec Expo could not find still compiled here, but was never
+      # registered, so requireNativeModule would have thrown at runtime.
+      - name: Check the module is autolinked
+        run: |
+          npx expo-modules-autolinking resolve --platform apple --json \
+            | node -e 'const m = JSON.parse(require("fs").readFileSync(0, "utf8")).modules;
+              if (!m.some((x) => x.packageName === "@bounceapp/react-native-paypal")) {
+                console.error("@bounceapp/react-native-paypal is not autolinked for apple");
+                process.exit(1);
+              }'
+        working-directory: example
       - name: Install pods
         run: pod install
         working-directory: example/ios
