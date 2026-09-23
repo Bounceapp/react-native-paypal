@@ -1,5 +1,6 @@
 package com.reactnativepaypal
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -11,6 +12,7 @@ import com.braintreepayments.api.paypal.PayPalPaymentAuthResult
 import com.braintreepayments.api.paypal.PayPalPendingRequest
 import com.braintreepayments.api.paypal.PayPalResult
 import com.braintreepayments.api.paypal.PayPalVaultRequest
+import com.facebook.react.bridge.ActivityEventListener
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.LifecycleEventListener
 import com.facebook.react.bridge.Promise
@@ -22,13 +24,14 @@ import com.reactnativepaypal.utils.ErrorType
 import com.reactnativepaypal.utils.createError
 
 class PaypalModule(reactContext: ReactApplicationContext) :
-  ReactContextBaseJavaModule(reactContext), LifecycleEventListener {
+  ReactContextBaseJavaModule(reactContext), ActivityEventListener, LifecycleEventListener {
 
   private var mPromise: Promise? = null
   private var mPayPalClient: PayPalClient? = null
   private val mPayPalLauncher = PayPalLauncher()
 
   init {
+    reactContext.addActivityEventListener(this)
     reactContext.addLifecycleEventListener(this)
   }
 
@@ -122,8 +125,28 @@ class PaypalModule(reactContext: ReactApplicationContext) :
     }
   }
 
+  // A singleTask or singleTop activity -- Expo's default -- receives the PayPal
+  // return here. React Native's ReactActivity does not call setIntent(), so the
+  // activity's own intent would still be the original launch intent by the time
+  // onHostResume runs.
+  override fun onNewIntent(intent: Intent) {
+    handleReturnToApp(intent)
+  }
+
+  // Covers every other launch mode, where the return starts or recreates the
+  // activity with the return intent. For singleTask this runs after
+  // onNewIntent has already consumed the pending request, so it returns early.
   override fun onHostResume() {
     reactApplicationContext.currentActivity?.intent?.let { handleReturnToApp(it) }
+  }
+
+  override fun onActivityResult(
+    activity: Activity,
+    requestCode: Int,
+    resultCode: Int,
+    data: Intent?
+  ) {
+    //NOTE: empty implementation
   }
 
   private fun handleReturnToApp(intent: Intent) {
@@ -148,9 +171,13 @@ class PaypalModule(reactContext: ReactApplicationContext) :
         resolveError(ErrorType.Failed, authResult.error.message)
       }
 
-      // The buyer came back without finishing. The request stays pending so a
-      // later return can still complete it.
-      is PayPalPaymentAuthResult.NoResult -> Unit
+      // The buyer came back without finishing -- closed the browser or pressed
+      // back. Settle as a cancel rather than leaving the promise pending, and drop
+      // the stored request so it cannot be replayed on a later launch.
+      is PayPalPaymentAuthResult.NoResult -> {
+        clearPendingRequest()
+        resolveError(ErrorType.Canceled, "User cancelled billing agreement request")
+      }
     }
   }
 
