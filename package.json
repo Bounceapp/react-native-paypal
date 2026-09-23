@@ -36,6 +36,7 @@
     "expo-module.config.json",
     "!lib/typescript/example",
     "!android/build",
+    "!android/src/test",
     "!ios/build",
     "!**/__tests__",
     "!**/__fixtures__",

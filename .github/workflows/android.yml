@@ -51,8 +51,11 @@ jobs:
                 process.exit(1);
               }'
         working-directory: example
-      - name: Compile library module
-        run: ./gradlew :bounceapp-react-native-paypal:assembleDebug --console=plain
+      - name: Compile and test library module
+        run: >-
+          ./gradlew --console=plain
+          :bounceapp-react-native-paypal:assembleDebug
+          :bounceapp-react-native-paypal:testDebugUnitTest
         working-directory: example/android
 
   detekt:

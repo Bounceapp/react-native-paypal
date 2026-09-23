@@ -48,6 +48,9 @@ class PaypalModule : Module() {
   private val context: Context
     get() = appContext.reactContext ?: throw Exceptions.ReactContextLost()
 
+  private val pendingRequests: PendingRequestStore
+    get() = PendingRequestStore(context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE))
+
   override fun definition() = ModuleDefinition {
     Name("Paypal")
 
@@ -96,7 +99,7 @@ class PaypalModule : Module() {
     inFlight = authResult
     // A request left behind by an earlier flow must not be mistaken for this
     // one while it is still being created.
-    clearPendingRequest()
+    pendingRequests.clear()
 
     try {
       val payPalClient = PayPalClient(
@@ -125,7 +128,7 @@ class PaypalModule : Module() {
       when (val pendingRequest = payPalLauncher.launch(activity, readyToLaunch)) {
         // Persisted only so that a process death during the browser flow can
         // be cleaned up on relaunch. In-process, the result is awaited below.
-        is PayPalPendingRequest.Started -> storePendingRequest(pendingRequest.pendingRequestString)
+        is PayPalPendingRequest.Started -> pendingRequests.store(pendingRequest.pendingRequestString)
         is PayPalPendingRequest.Failure -> return error(FAILED, pendingRequest.error.message)
       }
 
@@ -155,10 +158,9 @@ class PaypalModule : Module() {
   }
 
   private fun handleReturnToApp(intent: Intent) {
-    val pendingRequestString = getPendingRequest() ?: return
     // Consumed exactly once, whatever the outcome, so a stale request can never
     // be replayed on a later launch.
-    clearPendingRequest()
+    val pendingRequestString = pendingRequests.consume() ?: return
 
     // Nothing is waiting after a process death: the JS that made the call is
     // gone, so the request is dropped and the buyer simply starts again.
@@ -184,26 +186,11 @@ class PaypalModule : Module() {
   private fun error(code: String, message: String?): Map<String, Any?> =
     mapOf("error" to mapOf("code" to code, "message" to message))
 
-  private fun sharedPreferences() =
-    context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-
-  private fun storePendingRequest(pendingRequestString: String) {
-    sharedPreferences().edit().putString(PENDING_REQUEST_KEY, pendingRequestString).apply()
-  }
-
-  private fun getPendingRequest(): String? =
-    sharedPreferences().getString(PENDING_REQUEST_KEY, null)
-
-  private fun clearPendingRequest() {
-    sharedPreferences().edit().remove(PENDING_REQUEST_KEY).apply()
-  }
-
   companion object {
     private const val FAILED = "Failed"
     private const val CANCELED = "Canceled"
     private const val CANCELED_MESSAGE = "User cancelled billing agreement request"
 
     private const val PREFS_NAME = "com.reactnativepaypal.PENDING_REQUEST"
-    private const val PENDING_REQUEST_KEY = "pending_request"
   }
 }
