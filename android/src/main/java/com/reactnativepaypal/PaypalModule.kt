@@ -87,10 +87,10 @@ class PaypalModule : Module() {
       ?: return error(FAILED, "You must provide the appLinkReturnUrl")
     val billingAgreementDescription = options.billingAgreementDescription
       ?: return error(FAILED, "You must provide the billingAgreementDescription")
-    val activity = appContext.currentActivity
-    if (activity !is ComponentActivity) {
-      return error(FAILED, "The activity is not available")
-    }
+    // `as?` is the safe cast: null for a missing activity and for one of the
+    // wrong type alike. (`as ComponentActivity?` would throw on the latter.)
+    val activity = appContext.currentActivity as? ComponentActivity
+      ?: return error(FAILED, "The activity is not available")
 
     val authResult = CompletableDeferred<PayPalPaymentAuthResult>()
     inFlight = authResult
@@ -129,22 +129,29 @@ class PaypalModule : Module() {
         is PayPalPendingRequest.Failure -> return error(FAILED, pendingRequest.error.message)
       }
 
-      return when (val result = authResult.await()) {
-        is PayPalPaymentAuthResult.Success -> when (val tokenized = payPalClient.tokenize(result)) {
-          is PayPalResult.Success -> payload(tokenized.nonce)
-          is PayPalResult.Failure -> error(FAILED, tokenized.error.message)
-          is PayPalResult.Cancel -> error(CANCELED, CANCELED_MESSAGE)
-        }
-        is PayPalPaymentAuthResult.Failure -> error(FAILED, result.error.message)
-        // The buyer came back without finishing: closed the browser or pressed
-        // back.
-        is PayPalPaymentAuthResult.NoResult -> error(CANCELED, CANCELED_MESSAGE)
-      }
+      return toResponse(payPalClient, authResult.await())
     } finally {
       if (inFlight === authResult) {
         inFlight = null
       }
     }
+  }
+
+  // Maps Braintree's result onto the response shape the JavaScript side has
+  // always received.
+  private suspend fun toResponse(
+    payPalClient: PayPalClient,
+    result: PayPalPaymentAuthResult
+  ): Map<String, Any?> = when (result) {
+    is PayPalPaymentAuthResult.Success -> when (val tokenized = payPalClient.tokenize(result)) {
+      is PayPalResult.Success -> payload(tokenized.nonce)
+      is PayPalResult.Failure -> error(FAILED, tokenized.error.message)
+      is PayPalResult.Cancel -> error(CANCELED, CANCELED_MESSAGE)
+    }
+    is PayPalPaymentAuthResult.Failure -> error(FAILED, result.error.message)
+    // The buyer came back without finishing: closed the browser or pressed
+    // back.
+    is PayPalPaymentAuthResult.NoResult -> error(CANCELED, CANCELED_MESSAGE)
   }
 
   private fun handleReturnToApp(intent: Intent) {
