@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.ComponentActivity
+import com.braintreepayments.api.paypal.PayPalAccountNonce
 import com.braintreepayments.api.paypal.PayPalClient
 import com.braintreepayments.api.paypal.PayPalLauncher
 import com.braintreepayments.api.paypal.PayPalPaymentAuthRequest
@@ -11,177 +12,173 @@ import com.braintreepayments.api.paypal.PayPalPaymentAuthResult
 import com.braintreepayments.api.paypal.PayPalPendingRequest
 import com.braintreepayments.api.paypal.PayPalResult
 import com.braintreepayments.api.paypal.PayPalVaultRequest
-import com.facebook.react.bridge.Arguments
-import com.facebook.react.bridge.LifecycleEventListener
-import com.facebook.react.bridge.Promise
-import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactContextBaseJavaModule
-import com.facebook.react.bridge.ReactMethod
-import com.facebook.react.bridge.ReadableMap
-import com.reactnativepaypal.utils.ErrorType
-import com.reactnativepaypal.utils.createError
+import expo.modules.kotlin.exception.Exceptions
+import expo.modules.kotlin.functions.Coroutine
+import expo.modules.kotlin.functions.Queues
+import expo.modules.kotlin.modules.Module
+import expo.modules.kotlin.modules.ModuleDefinition
+import expo.modules.kotlin.records.Field
+import expo.modules.kotlin.records.Record
+import kotlinx.coroutines.CompletableDeferred
 
-class PaypalModule(reactContext: ReactApplicationContext) :
-  ReactContextBaseJavaModule(reactContext), LifecycleEventListener {
+class RequestBillingAgreementOptions : Record {
+  @Field val clientToken: String? = null
+  @Field val appLinkReturnUrl: String? = null
+  @Field val billingAgreementDescription: String? = null
+  @Field val hasUserLocationConsent: Boolean = false
+  @Field val merchantAccountID: String? = null
+  @Field val displayName: String? = null
+  @Field val localeCode: String? = null
+  @Field val shippingAddressRequired: Boolean = false
+}
 
-  private var mPromise: Promise? = null
-  private var mPayPalClient: PayPalClient? = null
-  private val mPayPalLauncher = PayPalLauncher()
+// Concurrency rule: all state below is confined to the main thread. The
+// function runs on Queues.MAIN and the lifecycle hooks are delivered on main,
+// so there are no locks and no @Volatile. Settle-once comes from the function
+// returning a value and from CompletableDeferred.complete() being a no-op after
+// the first call -- never from the order in which main happens to run things.
+class PaypalModule : Module() {
+  private val payPalLauncher = PayPalLauncher()
 
-  init {
-    reactContext.addLifecycleEventListener(this)
+  // Non-null from the moment a request starts until it settles. Set before the
+  // first suspension point, so a second call made in the meantime is rejected
+  // rather than silently replacing the first.
+  private var inFlight: CompletableDeferred<PayPalPaymentAuthResult>? = null
+
+  private val context: Context
+    get() = appContext.reactContext ?: throw Exceptions.ReactContextLost()
+
+  override fun definition() = ModuleDefinition {
+    Name("Paypal")
+
+    (AsyncFunction("requestBillingAgreement") Coroutine { options: RequestBillingAgreementOptions ->
+      requestBillingAgreement(options)
+    }).runOnQueue(Queues.MAIN)
+
+    // A singleTask or singleTop activity -- Expo's default -- receives the
+    // PayPal return here. React Native's ReactActivity does not call
+    // setIntent(), so the activity's own intent is still the launch intent.
+    OnNewIntent { intent -> handleReturnToApp(intent) }
+
+    // Covers every other launch mode, and the buyer closing the browser
+    // without finishing. For singleTask this runs after OnNewIntent has
+    // already consumed the pending request, so it returns early.
+    OnActivityEntersForeground {
+      appContext.currentActivity?.intent?.let { handleReturnToApp(it) }
+    }
+
+    OnDestroy {
+      inFlight?.cancel()
+      inFlight = null
+    }
   }
 
-  override fun getName(): String {
-    return "Paypal"
-  }
-
-  @ReactMethod
-  fun requestBillingAgreement(options: ReadableMap, promise: Promise) {
-    mPromise = promise
-
-    val clientToken = options.getString("clientToken")
-    if (clientToken == null) {
-      resolveError(ErrorType.Failed, "You must provide the clientToken")
-      return
+  private suspend fun requestBillingAgreement(
+    options: RequestBillingAgreementOptions
+  ): Map<String, Any?> {
+    if (inFlight != null) {
+      return error(FAILED, "A billing agreement request is already in progress")
+    }
+    val clientToken = options.clientToken
+      ?: return error(FAILED, "You must provide the clientToken")
+    // Braintree v5 returns through an Android App Link, and PayPalClient has no
+    // constructor without one, so it has to come from the caller.
+    val appLinkReturnUrl = options.appLinkReturnUrl
+      ?: return error(FAILED, "You must provide the appLinkReturnUrl")
+    val billingAgreementDescription = options.billingAgreementDescription
+      ?: return error(FAILED, "You must provide the billingAgreementDescription")
+    val activity = appContext.currentActivity
+    if (activity !is ComponentActivity) {
+      return error(FAILED, "The activity is not available")
     }
 
-    // v5 returns to the app through an Android App Link rather than deriving a
-    // browser-switch scheme itself, so the merchant's App Link has to be
-    // supplied by the caller -- PayPalClient has no constructor without it.
-    val appLinkReturnUrl = options.getString("appLinkReturnUrl")
-    if (appLinkReturnUrl == null) {
-      resolveError(ErrorType.Failed, "You must provide the appLinkReturnUrl")
-      return
-    }
+    val authResult = CompletableDeferred<PayPalPaymentAuthResult>()
+    inFlight = authResult
+    // A request left behind by an earlier flow must not be mistaken for this
+    // one while it is still being created.
+    clearPendingRequest()
 
-    val billingAgreementDescription = options.getString("billingAgreementDescription")
-    if (billingAgreementDescription == null) {
-      resolveError(ErrorType.Failed, "You must provide the billingAgreementDescription")
-      return
-    }
+    try {
+      val payPalClient = PayPalClient(
+        context = context,
+        authorization = clientToken,
+        appLinkReturnUrl = Uri.parse(appLinkReturnUrl),
+        // Matches the `${applicationId}.braintree` intent-filter merchants
+        // already register. Used when a buyer has turned off "Open supported
+        // links" and App Link return is unavailable.
+        deepLinkFallbackUrlScheme = "${context.packageName}.braintree"
+      )
+      val request = PayPalVaultRequest(
+        hasUserLocationConsent = options.hasUserLocationConsent,
+        billingAgreementDescription = billingAgreementDescription,
+        merchantAccountId = options.merchantAccountID,
+        displayName = options.displayName,
+        localeCode = options.localeCode,
+        isShippingAddressRequired = options.shippingAddressRequired
+      )
 
-    val activity = reactApplicationContext.currentActivity as? ComponentActivity
-    if (activity == null) {
-      resolveError(ErrorType.Failed, "The activity is not available")
-      return
-    }
+      val readyToLaunch = when (val authRequest = payPalClient.createPaymentAuthRequest(context, request)) {
+        is PayPalPaymentAuthRequest.ReadyToLaunch -> authRequest
+        is PayPalPaymentAuthRequest.Failure -> return error(FAILED, authRequest.error.message)
+      }
 
-    val payPalClient = PayPalClient(
-      context = reactApplicationContext,
-      authorization = clientToken,
-      appLinkReturnUrl = Uri.parse(appLinkReturnUrl),
-      // Matches the `${applicationId}.braintree` intent-filter the README
-      // already asks merchants to register. Used when a buyer has turned off
-      // "Open supported links" and App Link return is unavailable.
-      deepLinkFallbackUrlScheme = "${reactApplicationContext.packageName}.braintree"
-    )
-    mPayPalClient = payPalClient
+      when (val pendingRequest = payPalLauncher.launch(activity, readyToLaunch)) {
+        // Persisted only so that a process death during the browser flow can
+        // be cleaned up on relaunch. In-process, the result is awaited below.
+        is PayPalPendingRequest.Started -> storePendingRequest(pendingRequest.pendingRequestString)
+        is PayPalPendingRequest.Failure -> return error(FAILED, pendingRequest.error.message)
+      }
 
-    val request = PayPalVaultRequest(
-      hasUserLocationConsent = if (options.hasKey("hasUserLocationConsent")) {
-        options.getBoolean("hasUserLocationConsent")
-      } else {
-        false
-      },
-      billingAgreementDescription = billingAgreementDescription
-    )
-
-    if (options.hasKey("merchantAccountID")) {
-      request.merchantAccountId = options.getString("merchantAccountID")
-    }
-    if (options.hasKey("displayName")) {
-      request.displayName = options.getString("displayName")
-    }
-    if (options.hasKey("localeCode")) {
-      request.localeCode = options.getString("localeCode")
-    }
-    if (options.hasKey("shippingAddressRequired")) {
-      request.isShippingAddressRequired = options.getBoolean("shippingAddressRequired")
-    }
-
-    payPalClient.createPaymentAuthRequest(reactApplicationContext, request) { paymentAuthRequest ->
-      when (paymentAuthRequest) {
-        is PayPalPaymentAuthRequest.ReadyToLaunch -> launch(activity, paymentAuthRequest)
-        is PayPalPaymentAuthRequest.Failure ->
-          resolveError(ErrorType.Failed, paymentAuthRequest.error.message)
+      return when (val result = authResult.await()) {
+        is PayPalPaymentAuthResult.Success -> when (val tokenized = payPalClient.tokenize(result)) {
+          is PayPalResult.Success -> payload(tokenized.nonce)
+          is PayPalResult.Failure -> error(FAILED, tokenized.error.message)
+          is PayPalResult.Cancel -> error(CANCELED, CANCELED_MESSAGE)
+        }
+        is PayPalPaymentAuthResult.Failure -> error(FAILED, result.error.message)
+        // The buyer came back without finishing: closed the browser or pressed
+        // back.
+        is PayPalPaymentAuthResult.NoResult -> error(CANCELED, CANCELED_MESSAGE)
+      }
+    } finally {
+      if (inFlight === authResult) {
+        inFlight = null
       }
     }
-  }
-
-  private fun launch(
-    activity: ComponentActivity,
-    paymentAuthRequest: PayPalPaymentAuthRequest.ReadyToLaunch
-  ) {
-    when (val pendingRequest = mPayPalLauncher.launch(activity, paymentAuthRequest)) {
-      // The browser switch can outlive this process, so the pending request is
-      // persisted rather than held in memory.
-      is PayPalPendingRequest.Started -> storePendingRequest(pendingRequest.pendingRequestString)
-      is PayPalPendingRequest.Failure ->
-        resolveError(ErrorType.Failed, pendingRequest.error.message)
-    }
-  }
-
-  override fun onHostResume() {
-    reactApplicationContext.currentActivity?.intent?.let { handleReturnToApp(it) }
   }
 
   private fun handleReturnToApp(intent: Intent) {
     val pendingRequestString = getPendingRequest() ?: return
-    val pendingRequest = PayPalPendingRequest.Started(pendingRequestString)
+    // Consumed exactly once, whatever the outcome, so a stale request can never
+    // be replayed on a later launch.
+    clearPendingRequest()
 
-    when (val authResult = mPayPalLauncher.handleReturnToApp(pendingRequest, intent)) {
-      is PayPalPaymentAuthResult.Success -> {
-        clearPendingRequest()
-        mPayPalClient?.tokenize(authResult) { result ->
-          when (result) {
-            is PayPalResult.Success -> resolveNonce(result)
-            is PayPalResult.Failure -> resolveError(ErrorType.Failed, result.error.message)
-            is PayPalResult.Cancel ->
-              resolveError(ErrorType.Canceled, "User cancelled billing agreement request")
-          }
-        }
-      }
-
-      is PayPalPaymentAuthResult.Failure -> {
-        clearPendingRequest()
-        resolveError(ErrorType.Failed, authResult.error.message)
-      }
-
-      // The buyer came back without finishing. The request stays pending so a
-      // later return can still complete it.
-      is PayPalPaymentAuthResult.NoResult -> Unit
-    }
+    // Nothing is waiting after a process death: the JS that made the call is
+    // gone, so the request is dropped and the buyer simply starts again.
+    val authResult = inFlight ?: return
+    authResult.complete(
+      payPalLauncher.handleReturnToApp(PayPalPendingRequest.Started(pendingRequestString), intent)
+    )
   }
 
-  private fun resolveNonce(result: PayPalResult.Success) {
-    val payload = Arguments.createMap()
-    val details = Arguments.createMap()
+  private fun payload(nonce: PayPalAccountNonce): Map<String, Any?> = mapOf(
+    "payload" to mapOf(
+      "nonce" to nonce.string,
+      "details" to mapOf(
+        "payerId" to nonce.payerId,
+        "email" to nonce.email,
+        "firstName" to nonce.firstName,
+        "lastName" to nonce.lastName,
+        "phone" to nonce.phone
+      )
+    )
+  )
 
-    payload.putString("nonce", result.nonce.string)
-
-    details.putString("payerId", result.nonce.payerId)
-    details.putString("email", result.nonce.email)
-    details.putString("firstName", result.nonce.firstName)
-    details.putString("lastName", result.nonce.lastName)
-    details.putString("phone", result.nonce.phone)
-
-    payload.putMap("details", details)
-
-    val map = Arguments.createMap()
-    map.putMap("payload", payload)
-
-    mPromise?.resolve(map)
-    mPromise = null
-  }
-
-  private fun resolveError(type: ErrorType, message: String?) {
-    mPromise?.resolve(createError(type.toString(), message))
-    mPromise = null
-  }
+  private fun error(code: String, message: String?): Map<String, Any?> =
+    mapOf("error" to mapOf("code" to code, "message" to message))
 
   private fun sharedPreferences() =
-    reactApplicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
   private fun storePendingRequest(pendingRequestString: String) {
     sharedPreferences().edit().putString(PENDING_REQUEST_KEY, pendingRequestString).apply()
@@ -194,15 +191,11 @@ class PaypalModule(reactContext: ReactApplicationContext) :
     sharedPreferences().edit().remove(PENDING_REQUEST_KEY).apply()
   }
 
-  override fun onHostPause() {
-    //NOTE: empty implementation
-  }
-
-  override fun onHostDestroy() {
-    //NOTE: empty implementation
-  }
-
   companion object {
+    private const val FAILED = "Failed"
+    private const val CANCELED = "Canceled"
+    private const val CANCELED_MESSAGE = "User cancelled billing agreement request"
+
     private const val PREFS_NAME = "com.reactnativepaypal.PENDING_REQUEST"
     private const val PENDING_REQUEST_KEY = "pending_request"
   }

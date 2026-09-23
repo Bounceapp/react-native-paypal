@@ -23,8 +23,12 @@ support only `requestBillingAgreement` for the moment
 ## Installation
 
 ```sh
-yarn add @bounceapp/react-native-paypal react-native-svg
+yarn add @bounceapp/react-native-paypal
 ```
+
+This is an [Expo module](https://docs.expo.dev/modules/overview/), so your app
+needs the `expo` package. Bare React Native apps can add it with
+`npx install-expo-modules@latest`. It is developed and tested against Expo SDK 56.
 
 ### Requirements
 
@@ -108,32 +112,30 @@ your application ID automatically — you only need to keep declaring it.
 
 ```js
 // App.tsx
-import React, { useState } from "react"
+import { useState } from "react"
 import { Button } from "react-native"
-import {
-  requestBillingAgreement,
-  PaypalButton,
-} from "@bounceapp/react-native-paypal"
+import { requestBillingAgreement } from "@bounceapp/react-native-paypal"
 
 export default function App() {
   const [loading, setLoading] = useState(false)
 
   const onPress = async () => {
+    setLoading(true)
     const res = await requestBillingAgreement({
       clientToken: "CLIENT_TOKEN",
       // Android only: your verified App Link. Ignored on iOS.
       appLinkReturnUrl: "https://your-app.example.com",
     })
 
-    if (res?.error) {
-      console.error(res?.error)
+    setLoading(false)
+
+    if (res.error) {
+      console.error(res.error)
       return
     }
-
-    setLoading(false)
   }
 
-  return <PaypalButton onPress={onPress} disabled={loading} />
+  return <Button title="Pay with PayPal" onPress={onPress} disabled={loading} />
 }
 ```
 
