@@ -51,7 +51,7 @@ class PendingRequestStoreTest {
 }
 
 /** Only the string operations PendingRequestStore uses are implemented. */
-private class InMemorySharedPreferences : SharedPreferences {
+internal class InMemorySharedPreferences : SharedPreferences {
   private val values = mutableMapOf<String, String>()
 
   override fun getString(key: String, defValue: String?): String? = values[key] ?: defValue
