@@ -28,6 +28,11 @@ class PaypalModule(reactContext: ReactApplicationContext) :
 
   private var mPromise: Promise? = null
   private var mPayPalClient: PayPalClient? = null
+  // The activity's intent when the browser switch started. Browser-switch
+  // matches a return on scheme and host only, so if this intent is itself an
+  // old return URL (a previous flow's success, kept by setIntent() or by a
+  // process restart) it would be replayed as this flow's result.
+  private var mIntentAtLaunch: Intent? = null
   private val mPayPalLauncher = PayPalLauncher()
 
   init {
@@ -64,20 +69,16 @@ class PaypalModule(reactContext: ReactApplicationContext) :
       return
     }
 
-    val activity = reactApplicationContext.currentActivity as? ComponentActivity
-    if (activity == null) {
-      resolveError(ErrorType.Failed, "The activity is not available")
-      return
-    }
-
     val payPalClient = PayPalClient(
       context = reactApplicationContext,
       authorization = clientToken,
       appLinkReturnUrl = Uri.parse(appLinkReturnUrl),
       // Matches the `${applicationId}.braintree` intent-filter the README
-      // already asks merchants to register. Used when a buyer has turned off
-      // "Open supported links" and App Link return is unavailable.
-      deepLinkFallbackUrlScheme = "${reactApplicationContext.packageName}.braintree"
+      // already asks merchants to register, with underscores stripped as
+      // Braintree does for its own default scheme -- they are not valid in a
+      // URI scheme. Used when a buyer has turned off "Open supported links" and
+      // App Link return is unavailable.
+      deepLinkFallbackUrlScheme = "${reactApplicationContext.packageName.replace("_", "")}.braintree"
     )
     mPayPalClient = payPalClient
 
@@ -105,7 +106,16 @@ class PaypalModule(reactContext: ReactApplicationContext) :
 
     payPalClient.createPaymentAuthRequest(reactApplicationContext, request) { paymentAuthRequest ->
       when (paymentAuthRequest) {
-        is PayPalPaymentAuthRequest.ReadyToLaunch -> launch(activity, paymentAuthRequest)
+        // Read the activity only now: it may have been recreated while the
+        // request was on the network.
+        is PayPalPaymentAuthRequest.ReadyToLaunch -> {
+          val activity = reactApplicationContext.currentActivity as? ComponentActivity
+          if (activity == null) {
+            resolveError(ErrorType.Failed, "The activity is not available")
+          } else {
+            launch(activity, paymentAuthRequest)
+          }
+        }
         is PayPalPaymentAuthRequest.Failure ->
           resolveError(ErrorType.Failed, paymentAuthRequest.error.message)
       }
@@ -119,7 +129,10 @@ class PaypalModule(reactContext: ReactApplicationContext) :
     when (val pendingRequest = mPayPalLauncher.launch(activity, paymentAuthRequest)) {
       // The browser switch can outlive this process, so the pending request is
       // persisted rather than held in memory.
-      is PayPalPendingRequest.Started -> storePendingRequest(pendingRequest.pendingRequestString)
+      is PayPalPendingRequest.Started -> {
+        mIntentAtLaunch = activity.intent
+        storePendingRequest(pendingRequest.pendingRequestString)
+      }
       is PayPalPendingRequest.Failure ->
         resolveError(ErrorType.Failed, pendingRequest.error.message)
     }
@@ -136,8 +149,11 @@ class PaypalModule(reactContext: ReactApplicationContext) :
   // Covers every other launch mode, where the return starts or recreates the
   // activity with the return intent. For singleTask this runs after
   // onNewIntent has already consumed the pending request, so it returns early.
+  // An intent that was already there at launch is not a return, so it is
+  // swapped for an empty one, which settles as NoResult.
   override fun onHostResume() {
-    reactApplicationContext.currentActivity?.intent?.let { handleReturnToApp(it) }
+    val intent = reactApplicationContext.currentActivity?.intent ?: return
+    handleReturnToApp(if (intent === mIntentAtLaunch) Intent() else intent)
   }
 
   override fun onActivityResult(
@@ -152,6 +168,7 @@ class PaypalModule(reactContext: ReactApplicationContext) :
   private fun handleReturnToApp(intent: Intent) {
     val pendingRequestString = getPendingRequest() ?: return
     val pendingRequest = PayPalPendingRequest.Started(pendingRequestString)
+    mIntentAtLaunch = null
 
     when (val authResult = mPayPalLauncher.handleReturnToApp(pendingRequest, intent)) {
       is PayPalPaymentAuthResult.Success -> {
@@ -172,7 +189,10 @@ class PaypalModule(reactContext: ReactApplicationContext) :
       }
 
       // The buyer came back without finishing -- closed the browser or pressed
-      // back. Settle as a cancel rather than leaving the promise pending, and drop
+      // back. Braintree also reports NoResult when the Custom Tab is minimized
+      // to picture-in-picture, where the buyer could still approve afterwards;
+      // that approval is then dropped, as JS has already been told Canceled.
+      // Settle as a cancel rather than leaving the promise pending, and drop
       // the stored request so it cannot be replayed on a later launch.
       is PayPalPaymentAuthResult.NoResult -> {
         clearPendingRequest()

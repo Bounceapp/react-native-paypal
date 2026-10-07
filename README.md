@@ -37,6 +37,19 @@ Link](https://developer.android.com/training/app-links), so you need a domain
 you control serving an `assetlinks.json` that lists your app. Pass that URL as
 `appLinkReturnUrl` on every `requestBillingAgreement` call.
 
+Give the App Link its own path, such as `/paypal`, and scope the intent-filter
+to it with a `pathPrefix`. Without one, the filter claims every link on the
+host, so if you use your main domain, all of its web links open your app.
+
+Two things to know about how Braintree handles the return:
+
+- The `pathPrefix` only scopes which links Android sends to your app. Braintree
+  itself matches a return on scheme and host alone, so another link on the same
+  host that reaches the app during a flow is not a PayPal return. It settles as
+  `Canceled`.
+- If the App Link is not verified, Braintree falls back to the
+  `${applicationId}.braintree` scheme on its own.
+
 The `${applicationId}.braintree` scheme is still used, now as the fallback for
 buyers who have turned off "Open supported links". This library derives it from
 your application ID automatically — you only need to keep declaring it.
@@ -55,7 +68,10 @@ your application ID automatically — you only need to keep declaring it.
     <action android:name="android.intent.action.VIEW" />
     <category android:name="android.intent.category.DEFAULT" />
     <category android:name="android.intent.category.BROWSABLE" />
-    <data android:scheme="https" android:host="your-app.example.com" />
+    <data
+      android:scheme="https"
+      android:host="your-app.example.com"
+      android:pathPrefix="/paypal" />
   </intent-filter>
   <!-- Deep link: the fallback return path. -->
   <intent-filter>
@@ -81,7 +97,8 @@ your application ID automatically — you only need to keep declaring it.
           "data": [
             {
               "scheme": "https",
-              "host": "your-app.example.com"
+              "host": "your-app.example.com",
+              "pathPrefix": "/paypal"
             }
           ],
           "category": ["BROWSABLE", "DEFAULT"]
@@ -119,7 +136,7 @@ export default function App() {
     const res = await requestBillingAgreement({
       clientToken: "CLIENT_TOKEN",
       // Android only: your verified App Link. Ignored on iOS.
-      appLinkReturnUrl: "https://your-app.example.com",
+      appLinkReturnUrl: "https://your-app.example.com/paypal",
     })
 
     if (res?.error) {
