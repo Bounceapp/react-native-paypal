@@ -6,8 +6,24 @@ style:
     active: true
   # Early returns are how the flow exits at each stage, and the default cap of
   # 2 would push it towards exceptions for control flow or `!!` instead. Guard
-  # clauses at the top are exempt; beyond those, allow one exit per Braintree
-  # stage -- creating the auth request, launching it -- plus the result.
+  # clauses at the top are exempt; beyond those, allow one exit per stage --
+  # creating the auth request, re-reading the activity, launching -- plus the
+  # result.
   ReturnCount:
     excludeGuardClauses: true
-    max: 3
+    max: 4
+
+# ktlint's rules, through the detekt-formatting plugin that scripts/detekt.sh
+# loads.
+formatting:
+  Indentation:
+    indentSize: 2
+  ParameterListWrapping:
+    indentSize: 2
+  # A Record's @Field properties read best as one block, as in Expo's own docs.
+  SpacingBetweenDeclarationsWithAnnotations:
+    active: false
+  # Flags Expo's `(AsyncFunction(...) Coroutine { ... }).runOnQueue(...)`
+  # idiom, which has no layout that satisfies it.
+  Wrapping:
+    active: false
