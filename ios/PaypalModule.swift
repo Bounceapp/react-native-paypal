@@ -36,16 +36,13 @@ public class PaypalModule: Module {
     guard let clientToken = options.clientToken else {
       return error(ErrorCode.failed, "You must provide the clientToken")
     }
-    guard let billingAgreementDescription = options.billingAgreementDescription else {
-      return error(ErrorCode.failed, "You must provide the billingAgreementDescription")
-    }
 
     let payPalClient = BTPayPalClient(authorization: clientToken)
     self.payPalClient = payPalClient
     defer { self.payPalClient = nil }
 
     let request = BTPayPalVaultRequest(
-      billingAgreementDescription: billingAgreementDescription,
+      billingAgreementDescription: options.billingAgreementDescription,
       displayName: options.displayName,
       isShippingAddressRequired: options.shippingAddressRequired,
       localeCode: options.localeCode.map(localeCodeFromString) ?? .none,
@@ -69,7 +66,7 @@ public class PaypalModule: Module {
     } catch BTPayPalError.canceled {
       // v7 reports a cancel as a thrown error; v6 signalled it with a nil nonce
       // and a nil error.
-      return error(ErrorCode.canceled, "User cancelled billing agreement request")
+      return error(ErrorCode.canceled, "User canceled billing agreement request")
     } catch {
       return self.error(ErrorCode.failed, error.localizedDescription)
     }

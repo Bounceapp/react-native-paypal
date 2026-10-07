@@ -17,7 +17,6 @@ export const requestBillingAgreement = (
   options: RequestBillingAgreementOptions,
 ): Promise<RequestBillingAgreementResponse> =>
   Paypal.requestBillingAgreement({
-    billingAgreementDescription: "",
     shippingAddressRequired: false,
     ...options,
   })
