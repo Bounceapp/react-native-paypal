@@ -28,12 +28,13 @@ yarn add @bounceapp/react-native-paypal
 
 This is an [Expo module](https://docs.expo.dev/modules/overview/), so your app
 needs the `expo` package. Bare React Native apps can add it with
-`npx install-expo-modules@latest`. It is developed and tested against Expo SDK 56.
+`npx install-expo-modules@latest`. It requires Expo SDK 56 or later.
 
 ### Requirements
 
 |         | Minimum                       |
 | ------- | ----------------------------- |
+| Expo    | SDK 56                        |
 | iOS     | 16.0 (Braintree iOS v7)       |
 | Android | API 23 (Braintree Android v5) |
 
@@ -155,6 +156,11 @@ export default function App() {
   return <Button title="Pay with PayPal" onPress={onPress} disabled={loading} />
 }
 ```
+
+Every expected outcome resolves: a nonce in `payload`, or an `error` whose
+`code` is `Canceled` or `Failed`. The promise rejects only on a programming
+error, such as an option of the wrong type, so there is no need for a
+`try`/`catch` around the call in normal use.
 
 ## 👏 Contributing
 
