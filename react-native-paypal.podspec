@@ -10,7 +10,8 @@ Pod::Spec.new do |s|
   s.license        = package["license"]
   s.authors        = package["author"]
 
-  # Braintree iOS v7 requires 16.0. Expo SDK 56 apps are already at 16.4.
+  # Braintree iOS 7.13 supports 15.0, but Expo SDK 56, the minimum this
+  # package supports, already requires 16.4.
   s.platforms      = { :ios => "16.0" }
   s.swift_version  = "5.9"
   # release-it tags releases as v${version}.
@@ -18,7 +19,7 @@ Pod::Spec.new do |s|
   s.static_framework = true
 
   s.dependency "ExpoModulesCore"
-  s.dependency "Braintree", "~> 7.12.0"
+  s.dependency "Braintree", "~> 7.13"
 
   # Swift/Objective-C compatibility
   s.pod_target_xcconfig = {
