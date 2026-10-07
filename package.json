@@ -92,9 +92,9 @@
     "typescript": "~5.9.2"
   },
   "peerDependencies": {
-    "expo": "*",
+    "expo": ">=56.0.0",
     "react": "*",
-    "react-native": "*"
+    "react-native": ">=0.85.0"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": "npx eslint --cache --fix",

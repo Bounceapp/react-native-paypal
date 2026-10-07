@@ -17,7 +17,7 @@ iOS v6 deprecates in **November 2026**, so this is not optional for long.
 | App Link must be configured and registered  | Android  | Host `assetlinks.json`, add an intent-filter, register with Braintree |
 | `minSdkVersion` 21 → 23                     | Android  | Raise your `minSdkVersion`                                            |
 | iOS deployment target 14.0 → 16.0           | iOS      | Raise your deployment target                                          |
-| Native code is now an Expo module           | Both     | Install `expo`                                                        |
+| Native code is now an Expo module           | Both     | Install `expo`, SDK 56 or later                                       |
 | `PaypalButton` and `PaypalLogo` removed     | Both     | Render your own button                                                |
 
 The response shape is unchanged and every existing option behaves the same.
@@ -29,8 +29,10 @@ A few specific results do change -- see [Behaviour changes](#behaviour-changes).
 
 The native code is an [Expo module](https://docs.expo.dev/modules/overview/)
 rather than a legacy React Native bridge module, so it no longer depends on the
-bridgeless interop layer. Your app needs the `expo` package. Expo apps already
-have it; bare React Native apps can add it with:
+bridgeless interop layer. Your app needs the `expo` package, **SDK 56 or
+later** -- the only version it is tested against, and the peer dependency range
+enforces it. Expo apps already have the package; bare React Native apps can add
+it with:
 
 ```sh
 npx install-expo-modules@latest
@@ -135,29 +137,8 @@ site rather than letting it fail at runtime inside a payment.
 
 ### Raise the deployment target to 16.0
 
-Braintree iOS v7 requires iOS 16. There is no v7 release at a lower target.
-
-**Expo SDK 56 and later already meet this** — the SDK's own minimum is 16.4, so
-there is nothing to do. On older SDKs, raise it via `expo-build-properties`:
-
-```json
-{
-  "expo": {
-    "plugins": [
-      ["expo-build-properties", { "ios": { "deploymentTarget": "16.0" } }]
-    ]
-  }
-}
-```
-
-If you skip this, `pod install` fails at resolve time rather than at build
-time:
-
-```
-[!] CocoaPods could not find compatible versions for pod "Braintree":
-    Specs satisfying the `Braintree (~> 7.12.0)` dependency were found,
-    but they required a higher minimum deployment target.
-```
+The package requires iOS 16.0. **Expo SDK 56 already meets this** -- the SDK's
+own minimum is 16.4 -- so there is nothing to do.
 
 No JavaScript changes are needed for iOS. `appLinkReturnUrl` is Android-only
 and is ignored there.
@@ -177,6 +158,13 @@ specific cases:
   pending.
 - **Cancelling on iOS** resolves `Canceled` as before. Braintree v7 reports it
   differently under the hood; this is handled for you.
+- **The cancel message** now reads "User canceled billing agreement request"
+  on both platforms, in US English. Check against `error.code`, not the
+  message.
+- **Missing payer details on Android** are now `""`, as on iOS and as the
+  types declare. They used to be `null`.
+- **`billingAgreementDescription` is now left out when you omit it**, rather
+  than sent to Braintree as an empty string.
 - **Android error messages are now Braintree's own**, matching iOS. Android used
   to return the fixed string "The billing agreement request failed" for every
   failure. If you show `error.message` to users, check the wording is
@@ -212,8 +200,8 @@ await requestBillingAgreement({
 - [ ] App Link registered in the Braintree Control Panel
 - [ ] `autoVerify` intent-filter added, `${applicationId}.braintree` filter kept
 - [ ] `minSdkVersion` at 23 or higher
-- [ ] iOS deployment target at 16.0 or higher (automatic on Expo SDK 56+)
-- [ ] `expo` installed
+- [ ] iOS deployment target at 16.0 or higher (automatic on Expo SDK 56)
+- [ ] `expo` installed, SDK 56 or later
 - [ ] `PaypalButton` / `PaypalLogo` usages replaced with your own button
 - [ ] Any UI that shows `error.message` checked against the new Android wording
 - [ ] `appLinkReturnUrl` passed at every `requestBillingAgreement` call site
