@@ -101,8 +101,22 @@ App Link that is not registered will not be accepted.
 </activity>
 ```
 
-On Expo, express the same thing in `app.json` under
-`expo.android.intentFilters` — see the README for that form.
+On Expo, add the config plugin instead, with the same URL you pass as
+`appLinkReturnUrl`. It writes both filters for you, so you can remove any you
+declared under `expo.android.intentFilters`:
+
+```json
+{
+  "expo": {
+    "plugins": [
+      [
+        "@bounceapp/react-native-paypal",
+        { "appLinkReturnUrl": "https://your-app.example.com/paypal" }
+      ]
+    ]
+  }
+}
+```
 
 > **If your App Link URL contains a path**, add a matching
 > `android:pathPrefix` to the intent-filter. Unlike iOS, the Android SDK uses
@@ -198,7 +212,7 @@ await requestBillingAgreement({
 
 - [ ] Domain serves `/.well-known/assetlinks.json` with your app's signing fingerprint
 - [ ] App Link registered in the Braintree Control Panel
-- [ ] `autoVerify` intent-filter added, `${applicationId}.braintree` filter kept
+- [ ] `autoVerify` intent-filter added, `${applicationId}.braintree` filter kept (or the config plugin added, on Expo)
 - [ ] `minSdkVersion` at 23 or higher
 - [ ] iOS deployment target at 16.0 or higher (automatic on Expo SDK 56)
 - [ ] `expo` installed, SDK 56 or later

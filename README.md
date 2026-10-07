@@ -93,38 +93,27 @@ your application ID automatically — you only need to keep declaring it.
 
 ### Expo
 
-```ts
+Add the config plugin with the same URL you pass as `appLinkReturnUrl`:
+
+```json
 // app.json
 {
   "expo": {
-    "android": {
-      "intentFilters": [
-        {
-          "action": "VIEW",
-          "autoVerify": true,
-          "data": [
-            {
-              "scheme": "https",
-              "host": "your-app.example.com",
-              "pathPrefix": "/paypal"
-            }
-          ],
-          "category": ["BROWSABLE", "DEFAULT"]
-        },
-        {
-          "action": "VIEW",
-          "data": [
-            {
-              "scheme": "${applicationId}.braintree"
-            }
-          ],
-          "category": ["BROWSABLE", "DEFAULT"]
-        }
+    "plugins": [
+      [
+        "@bounceapp/react-native-paypal",
+        { "appLinkReturnUrl": "https://your-app.example.com/paypal" }
       ]
-    }
+    ]
   }
 }
 ```
+
+On prebuild it adds both intent-filters to your main activity: the App Link,
+scoped to the URL's path with a `pathPrefix`, and the `.braintree` fallback
+scheme, derived from `android.package` exactly as the library derives it at
+runtime. If you declared either filter yourself under
+`expo.android.intentFilters`, remove it.
 
 ## Usage example
 
