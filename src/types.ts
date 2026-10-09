@@ -1,6 +1,3 @@
-import type { PressableProps, StyleProp, ViewStyle } from "react-native"
-import type { SvgProps } from "react-native-svg"
-
 export type RequestBillingAgreementOptions = {
   clientToken: string
   /**
@@ -46,6 +43,8 @@ export type RequestBillingAgreementOptions = {
     | "zh_TW"
     | "zh_XC"
   merchantAccountID?: string
+  /** Whether PayPal should collect a shipping address. Defaults to `false`. */
+  shippingAddressRequired?: boolean
   displayName?: string
 }
 
@@ -74,11 +73,3 @@ export type RequestBillingAgreementResponse =
       payload: RequestBillingAgreementPayload
       error: undefined
     }
-
-export type PaypalButtonProps = {
-  style?: StyleProp<ViewStyle>
-  disabled?: boolean
-  onPress?: PressableProps["onPress"]
-}
-
-export type PaypalLogoProps = SvgProps

@@ -1,10 +1,9 @@
 import {
-  PaypalButton,
   requestBillingAgreement,
   RequestBillingAgreementResponse,
 } from "@bounceapp/react-native-paypal"
-import React, { useState } from "react"
-import { ScrollView, StyleSheet, Text, View } from "react-native"
+import { useState } from "react"
+import { Button, ScrollView, StyleSheet, Text, View } from "react-native"
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context"
 
 export default function App() {
@@ -18,7 +17,7 @@ export default function App() {
     try {
       const res = await requestBillingAgreement({
         clientToken: "CLIENT_TOKEN",
-        appLinkReturnUrl: "https://example.com",
+        appLinkReturnUrl: "https://example.com/paypal",
       })
       setPayload(res)
     } catch (_error) {
@@ -39,7 +38,11 @@ export default function App() {
           )}
         </ScrollView>
         <View style={styles.bottomBar}>
-          <PaypalButton onPress={onPress} disabled={loading} />
+          <Button
+            title="Pay with PayPal"
+            onPress={onPress}
+            disabled={loading}
+          />
         </View>
       </SafeAreaView>
     </SafeAreaProvider>

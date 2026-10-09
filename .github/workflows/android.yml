@@ -2,10 +2,9 @@ name: "Android Build 🤖"
 
 # The Kotlin module had no compile coverage at all until this workflow existed,
 # which is how an AGP 9 incompatibility reached main and had to be reported by
-# an outside contributor (#628). React Native is not resolvable from android/
-# on its own -- RN stopped shipping node_modules/react-native/android around
-# 0.71 -- so the module is compiled the way consumers actually get it: as an
-# autolinked dependency of the prebuilt example app.
+# an outside contributor (#628). The module is an Expo module, so it is
+# compiled the way consumers actually get it: autolinked into the prebuilt
+# example app, where Expo names its gradle project after the package.
 
 on:
   push:
@@ -40,6 +39,40 @@ jobs:
       - name: Prebuild example app
         run: npx expo prebuild --platform android --no-install
         working-directory: example
-      - name: Compile library module
-        run: ./gradlew :bounceapp_react-native-paypal:assembleDebug --console=plain
+      # Compiling proves the module builds, not that the app loads it: a
+      # podspec Expo could not find still compiled here, but was never
+      # registered, so requireNativeModule would have thrown at runtime.
+      - name: Check the module is autolinked
+        run: |
+          npx expo-modules-autolinking resolve --platform android --json \
+            | node -e 'const m = JSON.parse(require("fs").readFileSync(0, "utf8")).modules;
+              if (!m.some((x) => x.packageName === "@bounceapp/react-native-paypal")) {
+                console.error("@bounceapp/react-native-paypal is not autolinked for android");
+                process.exit(1);
+              }'
+        working-directory: example
+      - name: Compile and test library module
+        run: >-
+          ./gradlew --console=plain
+          :bounceapp-react-native-paypal:assembleDebug
+          :bounceapp-react-native-paypal:testDebugUnitTest
         working-directory: example/android
+
+  detekt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Setup JDK
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "17"
+      # Keyed on the script, which pins the detekt version and its checksum.
+      - name: Cache detekt
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/react-native-paypal
+          key: detekt-${{ hashFiles('scripts/detekt.sh') }}
+      - name: Lint the Android module
+        run: sh scripts/detekt.sh

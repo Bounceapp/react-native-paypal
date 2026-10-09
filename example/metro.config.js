@@ -16,13 +16,12 @@ config.resolver.nodeModulesPaths = [
   path.resolve(workspaceRoot, "node_modules"),
 ]
 
-// Force Metro to resolve react, react-native, and react-native-svg from example app
+// Force Metro to resolve react and react-native from the example app
 config.resolver.resolveRequest = (context, moduleName, platform) => {
   // Always use the example app's copy of these critical packages
   if (
     moduleName === "react" ||
     moduleName === "react-native" ||
-    moduleName === "react-native-svg" ||
     moduleName.startsWith("react/") ||
     moduleName.startsWith("react-native/")
   ) {

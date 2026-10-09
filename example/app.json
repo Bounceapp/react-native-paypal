@@ -18,33 +18,10 @@
     },
     "android": {
       "package": "com.reactnativepaypalexample",
-      "intentFilters": [
-        {
-          "action": "VIEW",
-          "autoVerify": true,
-          "data": [
-            {
-              "scheme": "https",
-              "host": "example.com"
-            }
-          ],
-          "category": ["BROWSABLE", "DEFAULT"]
-        },
-        {
-          "action": "VIEW",
-          "data": [
-            {
-              "scheme": "com.reactnativepaypalexample.braintree"
-            }
-          ],
-          "category": ["BROWSABLE", "DEFAULT"]
-        }
-      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
     },
     "web": {
@@ -52,11 +29,9 @@
     },
     "plugins": [
       [
-        "expo-build-properties",
+        "@bounceapp/react-native-paypal",
         {
-          "ios": {
-            "deploymentTarget": "16.0"
-          }
+          "appLinkReturnUrl": "https://example.com/paypal"
         }
       ]
     ]
