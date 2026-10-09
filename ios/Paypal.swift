@@ -2,7 +2,9 @@ import Braintree
 
 @objc(Paypal)
 class Paypal: NSObject {
-  var braintreeClient: BTAPIClient?
+  // The PayPal flow hands control to the PayPal app or a browser and calls back
+  // later, so the client has to outlive `requestBillingAgreement`.
+  private var payPalClient: BTPayPalClient?
 
   @objc(requestBillingAgreement:resolver:rejecter:)
   func requestBillingAgreement(
@@ -17,27 +19,21 @@ class Paypal: NSObject {
       resolve(Errors.createError(ErrorType.Failed, "You must provide the billingAgreementDescription"))
       return
     }
-    let merchantAccountID = options["merchantAccountID"] as? String
-    let displayName = options["displayName"] as? String
-    let localeCode = options["localeCode"] as? String
-    let isShippingAddressRequired = options["shippingAddressRequired"] as? Bool
 
-    braintreeClient = BTAPIClient(authorization: clientToken)!
-    let payPalClient = BTPayPalClient(apiClient: braintreeClient!)
-    let request = BTPayPalVaultRequest()
-    request.billingAgreementDescription = billingAgreementDescription
-    if let merchantAccountID = merchantAccountID {
-      request.merchantAccountID = merchantAccountID
-    }
-    if let displayName = displayName {
-      request.displayName = displayName
-    }
-    if let localeCode = localeCode {
-      request.localeCode = localeCodeFromString(localeCode)
-    }
-    if let isShippingAddressRequired = isShippingAddressRequired {
-      request.isShippingAddressRequired = isShippingAddressRequired
-    }
+    // v7 drops BTAPIClient from the PayPal flow: the client takes the
+    // authorization directly.
+    let payPalClient = BTPayPalClient(authorization: clientToken)
+    self.payPalClient = payPalClient
+
+    // v7 makes request properties initializer-only, so they are all passed up
+    // front rather than assigned afterwards.
+    let request = BTPayPalVaultRequest(
+      billingAgreementDescription: billingAgreementDescription,
+      displayName: options["displayName"] as? String,
+      isShippingAddressRequired: options["shippingAddressRequired"] as? Bool ?? false,
+      localeCode: (options["localeCode"] as? String).map(localeCodeFromString) ?? .none,
+      merchantAccountID: options["merchantAccountID"] as? String
+    )
 
     payPalClient.tokenize(request) { (tokenizedPayPalAccount, error) -> Void in
       if let tokenizedPayPalAccount = tokenizedPayPalAccount {
