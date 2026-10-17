@@ -87,7 +87,7 @@
     "prettier": "3.9.10",
     "react": "19.2.3",
     "react-native": "0.85.3",
-    "react-native-builder-bob": "0.43.1",
+    "react-native-builder-bob": "0.43.2",
     "react-native-safe-area-context": "~5.10.0",
     "release-it": "21.1.1",
     "typedoc": "0.28.20",
