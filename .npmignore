@@ -14,7 +14,6 @@ android/src/test/
 android/build/
 
 wdio.conf.js
-yarn-error.log
 wdio.ios.js
 wdio.android.js
 run-appium-tests.js
@@ -23,4 +22,4 @@ CONTRIBUTING.md
 appium.log
 babel.config.js
 tsconfig.json
-yarn.lock
+pnpm-lock.yaml

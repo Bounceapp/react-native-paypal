@@ -53,9 +53,9 @@
     "lint-staged": "lint-staged --allow-empty",
     "prepare": "bob build && husky install",
     "release": "release-it",
-    "docs": "yarn typedoc ./src/index.ts --out ./docs --tsconfig ./tsconfig.json --readme none --sort source-order",
-    "example": "yarn --cwd example",
-    "bootstrap": "yarn example && yarn"
+    "docs": "typedoc ./src/index.ts --out ./docs --tsconfig ./tsconfig.json --readme none --sort source-order",
+    "example": "pnpm --filter @bounceapp/react-native-paypal-example",
+    "bootstrap": "pnpm install"
   },
   "devDependencies": {
     "@babel/eslint-parser": "7.29.13",
@@ -64,6 +64,7 @@
     "@release-it/conventional-changelog": "12.0.2",
     "@types/eslint": "8.56.12",
     "@types/jest": "28.1.8",
+    "@types/node": "24.19.2",
     "@types/react": "~19.3.0",
     "@typescript-eslint/eslint-plugin": "8.72.1",
     "@typescript-eslint/parser": "8.72.1",
@@ -116,7 +117,5 @@
       ]
     ]
   },
-  "resolutions": {
-    "**/xcode/uuid": "^11.1.1"
-  }
+  "packageManager": "pnpm@12.18.0"
 }

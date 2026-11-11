@@ -4,7 +4,7 @@
   "schedule": "every weekend",
   "timezone": "Europe/Lisbon",
   "labels": ["dependencies"],
-  "postUpdateOptions": ["yarnDedupeHighest"],
+  "postUpdateOptions": ["pnpmDedupe"],
   "lockFileMaintenance": {
     "enabled": false
   },
