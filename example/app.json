@@ -33,7 +33,8 @@
         {
           "appLinkReturnUrl": "https://example.com/paypal"
         }
-      ]
+      ],
+      "expo-status-bar"
     ]
   }
 }
