@@ -1,7 +1,7 @@
 {
   "name": "@bounceapp/react-native-paypal-example",
   "version": "0.0.1",
-  "private": false,
+  "private": true,
   "license": "MIT",
   "scripts": {
     "start": "expo start --dev-client",
