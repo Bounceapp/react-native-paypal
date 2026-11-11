@@ -17,34 +17,33 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
-      - name: Setup Node.js
-        uses: actions/setup-node@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Setup mise
+        uses: jdx/mise-action@b44d12e7d0d8ee7461bb893e1b1993500433185b # v5
+      - name: Setup pnpm
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6
         with:
-          node-version-file: ./.tool-versions
+          cache: true
       - name: Setup JDK
-        uses: actions/setup-java@v6
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6
         with:
           distribution: temurin
           java-version: "17"
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v4
+        uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v6
+        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Install example dependencies
-        run: yarn install --frozen-lockfile
-        working-directory: example
+        run: pnpm install --frozen-lockfile
       - name: Prebuild example app
-        run: npx expo prebuild --platform android --no-install
+        run: pnpm exec expo prebuild --platform android --no-install
         working-directory: example
       # Compiling proves the module builds, not that the app loads it: a
       # podspec Expo could not find still compiled here, but was never
       # registered, so requireNativeModule would have thrown at runtime.
       - name: Check the module is autolinked
         run: |
-          npx expo-modules-autolinking resolve --platform android --json \
+          pnpm exec expo-modules-autolinking resolve --platform android --json \
             | node -e 'const m = JSON.parse(require("fs").readFileSync(0, "utf8")).modules;
               if (!m.some((x) => x.packageName === "@bounceapp/react-native-paypal")) {
                 console.error("@bounceapp/react-native-paypal is not autolinked for android");
@@ -62,15 +61,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Setup JDK
-        uses: actions/setup-java@v6
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6
         with:
           distribution: temurin
           java-version: "17"
       # Keyed on the script, which pins the detekt version and its checksum.
       - name: Cache detekt
-        uses: actions/cache@v6
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: ~/.cache/react-native-paypal
           key: detekt-${{ hashFiles('scripts/detekt.sh') }}
