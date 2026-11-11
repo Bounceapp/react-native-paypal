@@ -63,7 +63,7 @@ pnpm test
 
 To edit the Swift files, run `pnpm example ios` once to generate the native project, then open `example/ios/reactnativepaypalexample.xcworkspace` in Xcode and find the source files at `Pods > Development Pods > react-native-paypal`.
 
-To edit the Kotlin files, open `example/android` in Android studio and find the source files at `reactnativepaypal` under `Android`.
+To edit the Kotlin files, run `pnpm example android` once to generate the native project, then open `example/android` in Android Studio and find the source files at `reactnativepaypal` under `Android`.
 
 ### Commit message convention
 

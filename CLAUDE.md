@@ -27,4 +27,4 @@ Node comes from `.tool-versions` (`mise install`); run `corepack enable` once so
 - Leave `LICENSE` untouched.
 - The Braintree SDK versions live in `react-native-paypal.podspec` (iOS) and `android/build.gradle` (Android).
 - Git hooks come from `lefthook.yml`: pre-commit runs oxlint and oxfmt on staged files, then `tsc` and Jest; commit-msg runs commitlint.
-- Commits follow Conventional Commits (`@commitlint/config-conventional`): `fix`, `feat`, `refactor`, `docs`, `test`, `chore`.
+- Commits follow Conventional Commits (`@commitlint/config-conventional`). Allowed types: `build`, `chore`, `ci`, `docs`, `feat`, `fix`, `perf`, `refactor`, `revert`, `style`, `test`.
