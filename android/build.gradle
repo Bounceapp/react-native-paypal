@@ -18,6 +18,9 @@ android {
   defaultConfig {
     versionCode 1
     versionName packageJson.version
+    // Applied to the app's R8 run, which Expo's template turns on for release
+    // builds. See the file for why.
+    consumerProguardFiles 'consumer-rules.pro'
   }
   lint {
     abortOnError false
