@@ -1,0 +1,13 @@
+appId: com.reactnativepaypalexample
+name: An invalid client token resolves with a Failed error
+---
+- runFlow: ../subflows/launch.yaml
+- tapOn:
+    id: invalid-token
+# Resolves with { error }, not a rejection, and without leaving the app.
+- extendedWaitUntil:
+    visible:
+      id: status
+      text: "invalid-token:Failed"
+    timeout: 30000
+- assertNotVisible: "invalid-token threw.*"

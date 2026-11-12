@@ -1,0 +1,37 @@
+appId: com.reactnativepaypalexample
+name: Leaving the PayPal browser flow resolves as Canceled
+# Needs a Braintree sandbox key with PayPal enabled, built into the app as
+# EXPO_PUBLIC_PAYPAL_CLIENT_TOKEN. `pnpm e2e` leaves it out; `pnpm e2e:sandbox`
+# runs it.
+tags:
+  - sandbox
+---
+- runFlow: ../subflows/launch.yaml
+- tapOn:
+    id: pay
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      # ASWebAuthenticationSession: either its "Wants to Use paypal.com to Sign
+      # In" alert, or the sheet itself. Both have a Cancel button.
+      - extendedWaitUntil:
+          visible: Cancel
+          timeout: 30000
+      - tapOn: Cancel
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      # A Custom Tab over the app. Pressing back before it is up would leave the
+      # app instead, so wait for it to cover the buttons.
+      - extendedWaitUntil:
+          notVisible:
+            id: pay
+          timeout: 30000
+      - back
+- extendedWaitUntil:
+    visible:
+      id: status
+      text: "pay:Canceled"
+    timeout: 30000

@@ -46,6 +46,9 @@
   ],
   "scripts": {
     "test": "jest --passWithNoTests",
+    "e2e": "maestro test --exclude-tags=sandbox example/e2e/flows",
+    "e2e:sandbox": "maestro test --include-tags=sandbox example/e2e/flows",
+    "e2e:web": "pnpm --filter @bounceapp/react-native-paypal-example exec playwright test",
     "typecheck": "tsc",
     "lint": "oxlint && oxfmt --check",
     "lint:fix": "oxlint --fix && oxfmt",
@@ -98,5 +101,11 @@
       ]
     ]
   },
-  "packageManager": "pnpm@12.18.0"
+  "packageManager": "pnpm@12.18.0",
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/example/"
+    ]
+  }
 }

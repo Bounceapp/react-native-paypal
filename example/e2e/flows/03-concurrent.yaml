@@ -1,0 +1,24 @@
+appId: com.reactnativepaypalexample
+name: A second request made while one is in flight is rejected
+---
+- runFlow: ../subflows/launch.yaml
+- tapOn:
+    id: concurrent
+# Both resolve Failed: the first because its tokenization key names no merchant,
+# the second because the first was still fetching Braintree's configuration.
+- extendedWaitUntil:
+    visible:
+      id: status
+      text: "concurrent:Failed,Failed"
+    timeout: 30000
+- assertVisible: ".*concurrent #2 Failed: A billing agreement request is already in progress"
+- assertNotVisible: ".*concurrent #1 Failed: A billing agreement request is already in progress"
+# The guard is released once the first settles, so the module takes requests
+# again.
+- tapOn:
+    id: invalid-token
+- extendedWaitUntil:
+    visible:
+      id: status
+      text: "invalid-token:Failed"
+    timeout: 30000

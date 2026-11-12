@@ -1,0 +1,12 @@
+appId: com.reactnativepaypalexample
+name: The app starts with the native module registered
+---
+# requireNativeModule runs when the package is imported, so if the module were
+# not autolinked and registered, the app would fail before rendering anything.
+- runFlow: ../subflows/launch.yaml
+- assertVisible:
+    id: pay
+- assertVisible:
+    id: invalid-token
+- assertVisible:
+    id: concurrent
