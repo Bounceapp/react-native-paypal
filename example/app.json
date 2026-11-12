@@ -25,6 +25,7 @@
       "predictiveBackGestureEnabled": false
     },
     "web": {
+      "bundler": "metro",
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
@@ -33,7 +34,8 @@
         {
           "appLinkReturnUrl": "https://example.com/paypal"
         }
-      ]
+      ],
+      "expo-status-bar"
     ]
   }
 }

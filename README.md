@@ -153,7 +153,7 @@ error, such as an option of the wrong type, so there is no need for a
 
 ## 👏 Contributing
 
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
+See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow, including how to run the example app (it needs a development build; Expo Go does not include the native module).
 
 ## License
 

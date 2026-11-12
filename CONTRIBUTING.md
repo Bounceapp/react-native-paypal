@@ -4,56 +4,66 @@ We want this community to be friendly and respectful to each other. Please follo
 
 ## Development workflow
 
-To get started with the project, run `yarn` in the root directory to install the required dependencies for each package:
+To get started with the project, install the tools the repo pins, then the dependencies:
 
 ```sh
-yarn
+mise install
+corepack enable
+pnpm install
 ```
 
-> While it's possible to use [`npm`](https://github.com/npm/cli), the tooling is built around [`yarn`](https://classic.yarnpkg.com/), so you'll have an easier time if you use `yarn` for development.
+[`mise`](https://mise.jdx.dev/) installs the Node version from `.tool-versions`, and `corepack enable` makes `pnpm` resolve to the version in `package.json`. `pnpm install` installs the dependencies of the library and of the example app (a pnpm workspace package), builds `lib/` and installs the git hooks.
 
-While developing, you can run the [example app](/example/) to test your changes. Any changes you make in your library's JavaScript code will be reflected in the example app without a rebuild. If you change any native code, then you'll need to rebuild the example app.
+While developing, you can run the [example app](/example/) to test your changes. It needs a development build, because the library has native code that Expo Go does not include: `pnpm example ios` and `pnpm example android` build one and install it on a simulator or emulator. Any changes you make in your library's JavaScript code are reflected in the example app without a rebuild, because Metro bundles the library from `src/`. If you change any native code, then you'll need to rebuild the example app.
 
-To start the packager:
+To start the packager for a development build that is already installed:
 
 ```sh
-yarn example start
+pnpm example start
 ```
 
 To run the example app on Android:
 
 ```sh
-yarn example android
+pnpm example android
 ```
 
 To run the example app on iOS:
 
 ```sh
-yarn example ios
+pnpm example ios
 ```
 
-Make sure your code passes TypeScript and ESLint. Run the following to verify:
+PayPal does not work on web, so `pnpm example web` is only useful to check that importing the library does not break a web bundle.
+
+Make sure your code passes TypeScript, [oxlint](https://oxc.rs/docs/guide/usage/linter) and [oxfmt](https://oxc.rs/docs/guide/usage/formatter). Run the following to verify:
 
 ```sh
-yarn typecheck
-yarn lint
+pnpm typecheck
+pnpm lint
 ```
 
-To fix formatting errors, run the following:
+To fix lint and formatting errors, run the following:
 
 ```sh
-yarn lint --fix
+pnpm lint:fix
+```
+
+To lint the Kotlin files with [detekt](https://detekt.dev/), run the following (it needs a JDK):
+
+```sh
+pnpm lint:kotlin
 ```
 
 Remember to add tests for your change if possible. Run the unit tests by:
 
 ```sh
-yarn test
+pnpm test
 ```
 
-To edit the Objective-C files, open `example/ios/PaypalExample.xcworkspace` in XCode and find the source files at `Pods > Development Pods > react-native-paypal`.
+To edit the Swift files, run `pnpm example ios` once to generate the native project, then open `example/ios/reactnativepaypalexample.xcworkspace` in Xcode and find the source files at `Pods > Development Pods > react-native-paypal`.
 
-To edit the Kotlin files, open `example/android` in Android studio and find the source files at `reactnativepaypal` under `Android`.
+To edit the Kotlin files, run `pnpm example android` once to generate the native project, then open `example/android` in Android Studio and find the source files at `reactnativepaypal` under `Android`.
 
 ### Commit message convention
 
@@ -66,15 +76,13 @@ We follow the [conventional commits specification](https://www.conventionalcommi
 - `test`: adding or updating tests, e.g. add integration tests using detox.
 - `chore`: tooling changes, e.g. change CI config.
 
-Our pre-commit hooks verify that your commit message matches this format when committing.
+Our commit-msg hook (commitlint) verifies that your commit message matches this format when committing.
 
 ### Linting and tests
 
-[ESLint](https://eslint.org/), [Prettier](https://prettier.io/), [TypeScript](https://www.typescriptlang.org/)
+We use [TypeScript](https://www.typescriptlang.org/) for type checking, [oxlint](https://oxc.rs/docs/guide/usage/linter) for linting, [oxfmt](https://oxc.rs/docs/guide/usage/formatter) for formatting the code, [detekt](https://detekt.dev/) for linting the Kotlin code, and [Jest](https://jestjs.io/) for testing.
 
-We use [TypeScript](https://www.typescriptlang.org/) for type checking, [ESLint](https://eslint.org/) with [Prettier](https://prettier.io/) for linting and formatting the code, and [Jest](https://jestjs.io/) for testing.
-
-Our pre-commit hooks verify that the linter and tests pass when committing.
+[lefthook](https://lefthook.dev/) runs the git hooks, configured in `lefthook.yml`. Our pre-commit hook runs oxlint and oxfmt on the staged files, then verifies that type checking and the tests pass. The Kotlin lint is not part of the hooks; run it yourself when you change Android code.
 
 ### Publishing to npm
 
@@ -83,20 +91,23 @@ We use [release-it](https://github.com/release-it/release-it) to make it easier 
 To publish new versions, run the following:
 
 ```sh
-yarn release
+pnpm release
 ```
 
 ### Scripts
 
 The `package.json` file contains various scripts for common tasks:
 
-- `yarn bootstrap`: setup project by installing all dependencies and pods.
-- `yarn typescript`: type-check files with TypeScript.
-- `yarn lint`: lint files with ESLint.
-- `yarn test`: run unit tests with Jest.
-- `yarn example start`: start the Metro server for the example app.
-- `yarn example android`: run the example app on Android.
-- `yarn example ios`: run the example app on iOS.
+- `pnpm install` (or `pnpm bootstrap`): install all dependencies and build `lib/`.
+- `pnpm typecheck`: type-check files with TypeScript.
+- `pnpm lint`: lint files with oxlint and check formatting with oxfmt.
+- `pnpm lint:fix`: fix lint and formatting errors.
+- `pnpm lint:kotlin`: lint the Kotlin files with detekt.
+- `pnpm test`: run unit tests with Jest.
+- `pnpm run docs`: generate the API reference with typedoc.
+- `pnpm example start`: start the Metro server for the example app.
+- `pnpm example android`: run the example app on Android.
+- `pnpm example ios`: run the example app on iOS.
 
 ### Sending a pull request
 

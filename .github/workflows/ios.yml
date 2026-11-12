@@ -19,25 +19,24 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
-      - name: Setup Node.js
-        uses: actions/setup-node@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Setup mise
+        uses: jdx/mise-action@b44d12e7d0d8ee7461bb893e1b1993500433185b # v5
+      - name: Setup pnpm
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6
         with:
-          node-version-file: ./.tool-versions
+          cache: true
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Install example dependencies
-        run: yarn install --frozen-lockfile
-        working-directory: example
+        run: pnpm install --frozen-lockfile
       - name: Prebuild example app
-        run: npx expo prebuild --platform ios --no-install
+        run: pnpm exec expo prebuild --platform ios --no-install
         working-directory: example
       # Compiling proves the module builds, not that the app loads it: a
       # podspec Expo could not find still compiled here, but was never
       # registered, so requireNativeModule would have thrown at runtime.
       - name: Check the module is autolinked
         run: |
-          npx expo-modules-autolinking resolve --platform apple --json \
+          pnpm exec expo-modules-autolinking resolve --platform apple --json \
             | node -e 'const m = JSON.parse(require("fs").readFileSync(0, "utf8")).modules;
               if (!m.some((x) => x.packageName === "@bounceapp/react-native-paypal")) {
                 console.error("@bounceapp/react-native-paypal is not autolinked for apple");
