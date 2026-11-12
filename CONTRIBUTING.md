@@ -61,6 +61,30 @@ Remember to add tests for your change if possible. Run the unit tests by:
 pnpm test
 ```
 
+### End-to-end tests
+
+The E2E tests drive the example app. The [Maestro](https://maestro.dev/) flows in `example/e2e/flows` run on iOS and Android, and the [Playwright](https://playwright.dev/) tests in `example/e2e/web` run against the web build. CI runs them all from `.github/workflows/e2e.yml`.
+
+To run the Maestro flows, [install Maestro](https://docs.maestro.dev/getting-started/installing-maestro) (it needs a JDK), install the example app on a simulator or emulator with `pnpm example ios` or `pnpm example android`, keep `pnpm example start` running, and run:
+
+```sh
+pnpm e2e
+```
+
+The flows tagged `sandbox` open the real PayPal flow, so they need a [Braintree sandbox](https://sandbox.braintreegateway.com/) tokenization key for a merchant with PayPal enabled. Put it in `example/.env.local` (git-ignored), rebuild the app, and run them with `pnpm e2e:sandbox`:
+
+```sh
+EXPO_PUBLIC_PAYPAL_CLIENT_TOKEN=sandbox_xxxxxxxx_xxxxxxxxxxxxxxxx
+```
+
+On CI the key comes from the `PAYPAL_SANDBOX_TOKENIZATION_KEY` repository secret, and the sandbox flows are skipped without it.
+
+To run the web tests, install Chromium once with `pnpm example exec playwright install chromium`, then:
+
+```sh
+pnpm e2e:web
+```
+
 To edit the Swift files, run `pnpm example ios` once to generate the native project, then open `example/ios/reactnativepaypalexample.xcworkspace` in Xcode and find the source files at `Pods > Development Pods > react-native-paypal`.
 
 To edit the Kotlin files, run `pnpm example android` once to generate the native project, then open `example/android` in Android Studio and find the source files at `reactnativepaypal` under `Android`.
@@ -104,6 +128,8 @@ The `package.json` file contains various scripts for common tasks:
 - `pnpm lint:fix`: fix lint and formatting errors.
 - `pnpm lint:kotlin`: lint the Kotlin files with detekt.
 - `pnpm test`: run unit tests with Jest.
+- `pnpm e2e`: run the Maestro E2E flows against the installed example app (`pnpm e2e:sandbox` for the flows that need a Braintree sandbox key).
+- `pnpm e2e:web`: run the Playwright E2E tests against the web build.
 - `pnpm run docs`: generate the API reference with typedoc.
 - `pnpm example start`: start the Metro server for the example app.
 - `pnpm example android`: run the example app on Android.

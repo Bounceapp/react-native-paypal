@@ -1,0 +1,11 @@
+appId: com.reactnativepaypalexample
+---
+- launchApp:
+    clearState: true
+# A debug build loads its JS from Metro after a state clear, which can take a
+# while. A release build has it embedded.
+- extendedWaitUntil:
+    visible:
+      id: status
+      text: idle
+    timeout: 60000
