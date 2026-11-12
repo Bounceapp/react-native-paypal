@@ -11,12 +11,16 @@ Node comes from `.tool-versions` (`mise install`); run `corepack enable` once so
 - `pnpm lint`: oxlint (type-aware) and `oxfmt --check`. `pnpm lint:fix` autofixes and formats.
 - `pnpm lint:kotlin`: detekt on `android/src`. Needs a JDK on the path or `JAVA_HOME`.
 - `pnpm test`: Jest (`--passWithNoTests`). One file: `pnpm test plugin/__tests__/withPaypal.test.js`; one test: `pnpm test -t "<name>"`.
+- `pnpm e2e`: the Maestro flows in `example/e2e/flows` against the example app on the booted simulator or emulator. `pnpm e2e:sandbox` runs the flows tagged `sandbox`, which need a Braintree sandbox key. `pnpm e2e:web`: Playwright against the web build.
 - `pnpm run docs`: typedoc into `docs/`. Spell out `run`: `pnpm docs` is a built-in pnpm command.
 - `pnpm example start|ios|android|web`: run the example app (`start` is `expo start --dev-client`; `ios` and `android` are `expo run:ios` and `expo run:android`).
 
 ## Testing changes
 
-- Jest covers only the config plugin (`plugin/__tests__/withPaypal.test.js`). The Swift and Kotlin code has no automated tests.
+- Jest covers only the config plugin (`plugin/__tests__/withPaypal.test.js`). Kotlin unit tests (`android/src/test`) run in the Android workflow; the Swift code has none.
+- E2E: Maestro flows in `example/e2e/flows` (shared steps in `example/e2e/subflows`) and Playwright tests in `example/e2e/web`, run by `.github/workflows/e2e.yml` on release builds. The flows tap the example's buttons by `testID` and match its `status` line (`<scenario>:<outcome per request>`, e.g. `concurrent:Failed,Failed`), so keep `example/App.tsx` and the flows in sync. A behaviour change should come with a flow.
+- Flows tagged `sandbox` open the real PayPal flow. They need a Braintree sandbox tokenization key with PayPal enabled, built in as `EXPO_PUBLIC_PAYPAL_CLIENT_TOKEN` (`example/.env.local` locally, the `PAYPAL_SANDBOX_TOKENIZATION_KEY` secret on CI, where they are skipped without it). Rebuild the app after changing it.
+- Maestro targets whichever device is booted: if a physical phone is also connected, pass `--device`. A debug build needs `pnpm example start` running.
 - The example app is the check for iOS and Android. It needs a development build, because the native module is not in Expo Go: `pnpm example ios` or `pnpm example android` builds and installs one, and `pnpm example start` serves JS to it. Metro bundles the library from `src/`, so edits there reload without a rebuild; native changes need a new `ios` or `android` run.
 - PayPal does not work on web. `pnpm example web` only checks that importing the package does not break a web bundle (see the comment in `.github/workflows/web.yml`).
 
