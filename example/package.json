@@ -21,7 +21,7 @@
     "react-native-web": "~0.21.4"
   },
   "devDependencies": {
-    "@playwright/test": "1.64.1",
+    "@playwright/test": "1.65.1",
     "@types/react": "~19.3.0",
     "typescript": "~6.0.3"
   }
