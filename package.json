@@ -60,9 +60,9 @@
     "bootstrap": "pnpm install"
   },
   "devDependencies": {
-    "@commitlint/cli": "21.2.4",
-    "@commitlint/config-conventional": "21.2.4",
-    "@commitlint/types": "21.2.3",
+    "@commitlint/cli": "21.3.0",
+    "@commitlint/config-conventional": "21.3.0",
+    "@commitlint/types": "21.3.0",
     "@release-it/conventional-changelog": "12.0.2",
     "@types/jest": "28.1.8",
     "@types/node": "24.19.4",
